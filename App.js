@@ -18,9 +18,15 @@ function ExpensesOverview() {
 				headerStyle: {
 					backgroundColor: GlobalStyles.colors.primary,
 				},
+				headerTitleAlign: 'center',
 				headerTintColor: 'white',
+				tabBarShowLabel: false,
 				tabBarStyle: {
 					backgroundColor: GlobalStyles.colors.primary,
+					borderRadius: 10,
+					marginHorizontal: 20,
+					marginBottom: '4%',
+					height: '6%',
 				},
 				tabBarActiveTintColor: GlobalStyles.colors.highlight,
 				tabBarInactiveBackgroundColor: GlobalStyles.colors.accent,
