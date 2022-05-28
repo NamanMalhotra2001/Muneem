@@ -9,6 +9,7 @@ const ExpenseItem = ({ description, amount, date }) => {
 					<Text style={[styles.textBase, styles.description]}>
 						{description}
 					</Text>
+					{console.log(date)}
 					<Text style={styles.textBase}> {date.toString()} </Text>
 				</View>
 				<View style={styles.amountContainer}>
