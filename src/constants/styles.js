@@ -1,6 +1,9 @@
 export const GlobalStyles = {
 	colors: {
-		primary: '#3CFF5C',
-		highlight: '#777A46',
+		primary: '#00f397',
+		highlight: '#005167',
+		inactive: '#456443',
+		accent: '#74ffca',
+		lightAccent: '#D1FAE0',
 	},
 };

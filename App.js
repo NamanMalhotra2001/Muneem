@@ -1,39 +1,72 @@
-import * as React from 'react';
-import { View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { Stack, Text, TextInput, IconButton } from '@react-native-material/core';
-import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Home from './src/screens/Home';
-import Expenses from './src/screens/Expenses';
-import Settings from './src/screens/Settings';
-const Tab = createBottomTabNavigator();
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StatusBar } from 'expo-status-bar';
+import { GlobalStyles } from './src/constants/styles';
+import AllExpenses from './src/screens/AllExpenses';
+import ManageExpense from './src/screens/ManageExpense';
+import RecentExpenses from './src/screens/RecentExpenses';
+
+const Stack = createNativeStackNavigator();
+const BottomTabs = createBottomTabNavigator();
+
+function ExpensesOverview() {
+	return (
+		<BottomTabs.Navigator
+			screenOptions={{
+				headerStyle: {
+					backgroundColor: GlobalStyles.colors.primary,
+				},
+				headerTintColor: 'white',
+				tabBarStyle: {
+					backgroundColor: GlobalStyles.colors.primary,
+				},
+				tabBarActiveTintColor: GlobalStyles.colors.highlight,
+				tabBarInactiveBackgroundColor: GlobalStyles.colors.accent,
+				tabBarInactiveTintColor: GlobalStyles.colors.inactive,
+			}}
+		>
+			<BottomTabs.Screen
+				name='RecentExpenses'
+				component={RecentExpenses}
+				options={{
+					title: 'Recent Expenses',
+					tabBarLabel: 'Recent',
+					tabBarIcon: ({ color, size }) => (
+						<Ionicons name='hourglass' size={size} color={color} />
+					),
+				}}
+			/>
+			<BottomTabs.Screen
+				name='AllExpenses'
+				component={AllExpenses}
+				options={{
+					title: 'All Expenses',
+					tabBarLabel: 'All',
+					tabBarIcon: ({ color, size }) => (
+						<Ionicons name='calendar' size={size} color={color} />
+					),
+				}}
+			/>
+		</BottomTabs.Navigator>
+	);
+}
 
 export default function App() {
 	return (
-		<NavigationContainer>
-			<Tab.Navigator
-				screenOptions={({ route }) => ({
-					tabBarIcon: ({ focused, color, size }) => {
-						let iconName;
-						if (route.name === 'Home') {
-							iconName = 'home';
-						} else if (route.name === 'Settings') {
-							iconName = 'settings';
-						} else if (route.name === 'Expenses') {
-							iconName = 'cash-outline';
-						}
-						return <Ionicons name={iconName} size={size} color={color} />;
-					},
-					tabBarActiveTintColor: 'tomato',
-					tabBarInactiveTintColor: 'gray',
-				})}
-			>
-				<Tab.Screen name='Home' component={Home} />
-				<Tab.Screen name='Expenses' component={Expenses} />
-				<Tab.Screen name='Settings' component={Settings} />
-			</Tab.Navigator>
-		</NavigationContainer>
+		<>
+			<StatusBar style='auto' />
+			<NavigationContainer>
+				<Stack.Navigator>
+					<Stack.Screen
+						name='ExpensesOverview'
+						component={ExpensesOverview}
+						options={{ headerShown: false }}
+					/>
+					<Stack.Screen name='ManageExpense' component={ManageExpense} />
+				</Stack.Navigator>
+			</NavigationContainer>
+		</>
 	);
 }
