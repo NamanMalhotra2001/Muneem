@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import { Box, Text } from "@react-native-material/core";
-import { TextInput } from "react-native-paper";
-import { View, StyleSheet, ScrollView, StatusBar, Button } from "react-native";
-import {
-  Card,
-  CardTitle,
-  CardContent,
-  CardAction,
-  CardButton,
-  CardImage,
-} from "react-native-material-cards";
+import { TextInput, Card, Button, Title, Paragraph } from "react-native-paper";
+import { GlobalStyles } from "../constants/styles";
+import { View, StyleSheet, ScrollView, StatusBar } from "react-native";
+//@ts-ignore
+// import {
+//   Card,
+//   CardTitle,
+//   CardAction,
+//   CardButton,
+//   CardImage,
+// } from "react-native-material-cards";
 import Modal from "react-native-modal";
+// import { LogBox } from "react-native";
 
+// LogBox.ignoreLogs(["exported from 'deprecated-react-native-prop-types'."]);
 const Subscriptions = () => {
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -79,101 +82,71 @@ const Subscriptions = () => {
     },
   ];
   return (
-    <View>
+    <View style={{ backgroundColor: GlobalStyles.colors.lightAccent }}>
       <ScrollView>
-        <Card>
-          <CardImage
-            source={{
-              uri: subData[0].logo,
+        {subData.length > 0 ? (
+          subData.map((sub, index) => {
+            return (
+              <Card
+                style={{
+                  backgroundColor: GlobalStyles.colors.accent,
+                  margin: 10,
+                }}
+                key={sub.name}
+              >
+                <Card.Cover source={{ uri: sub.logo }} />
+                <Card.Title titleStyle={{ fontSize: 27 }} title={sub.name} />
+                <Card.Content
+                  style={{ backgroundColor: GlobalStyles.colors.accent }}
+                >
+                  <Title>
+                    Rs.{sub.amount}/{sub.duration}
+                  </Title>
+                </Card.Content>
+                <Card.Actions>
+                  <Button
+                    onPress={() => {
+                      var arr = [...subData];
+                      arr.splice(index, 1);
+                      setSubData(arr);
+                      console.log(arr, subData);
+                    }}
+                  >
+                    Remove Subscription
+                  </Button>
+                </Card.Actions>
+              </Card>
+            );
+          })
+        ) : (
+          <Card
+            style={{
+              backgroundColor: GlobalStyles.colors.accent,
+              margin: 10,
             }}
-          />
-          <CardTitle
-            title={
-              <View>
-                <Text style={{ fontSize: 25 }}>
-                  {subData[0].name}
-                  {"\n"}
-                </Text>
-                <Text style={{ fontSize: 20 }}>
-                  Rs.{subData[0].amount}/{subData[0].duration}
-                </Text>
-              </View>
-            }
-          />
-          <CardAction separator={true} inColumn={false}>
-            <CardButton
-              title="Edit"
-              color="blue"
-              onPress={() => {
-                toggleModal();
-                setModalData(subData[0]);
-                console.log(subData);
-              }}
+          >
+            <Card.Title
+              titleStyle={{ fontSize: 27 }}
+              title="No Subscriptions"
             />
-            <CardButton
-              title="Delete"
-              color="blue"
-              onPress={() => {
-                var arr = [...subData];
-                arr.splice(0, 1);
-                setSubData(arr);
-                console.log(arr, subData);
-              }}
-            />
-          </CardAction>
-        </Card>
-        <Card>
-          <CardImage
-            source={{
-              uri: subData[1].logo,
-            }}
-          />
-          <CardTitle
-            title={
-              <View>
-                <Text style={{ fontSize: 25 }}>
-                  {subData[1].name}
-                  {"\n"}
-                </Text>
-                <Text style={{ fontSize: 20 }}>
-                  Rs.{subData[1].amount}/{subData[1].duration}
-                </Text>
-              </View>
-            }
-          />
-          <CardAction separator={true} inColumn={false}>
-            <CardButton onPress={() => {}} title="Edit" color="blue" />
-          </CardAction>
-        </Card>
-        <Card>
-          <CardImage
-            source={{
-              uri: subData[2].logo,
-            }}
-          />
-          <CardTitle
-            title={
-              <View>
-                <Text style={{ fontSize: 25 }}>
-                  {subData[2].name}
-                  {"\n"}
-                </Text>
-                <Text style={{ fontSize: 20 }}>
-                  Rs.{subData[2].amount}/{subData[2].duration}
-                </Text>
-              </View>
-            }
-          />
-          <CardAction separator={true} inColumn={false}>
-            <CardButton onPress={() => {}} title="Edit" color="blue" />
-          </CardAction>
-        </Card>
+          </Card>
+        )}
+
         <Modal isVisible={isModalVisible}>
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
             <Box style={styles.paperShadow}>
-              <Text>{modalData.name}</Text>
+              <Text
+                style={{
+                  textAlign: "center",
+                  margin: 20,
+                  fontSize: 20,
+                  fontWeight: "bold",
+                }}
+              >
+                {modalData.name}
+              </Text>
               <TextInput
                 label="Amount"
                 onChangeText={onChangeText}
@@ -183,7 +156,7 @@ const Subscriptions = () => {
               />
             </Box>
 
-            <Button title="Hide modal" onPress={toggleModal} />
+            {/* <Button title="Hide modal" onPress={toggleModal} /> */}
           </View>
         </Modal>
       </ScrollView>
@@ -218,7 +191,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     height: 200,
     boxShadow: "grey 2px 2px 10px",
-    backgroundColor: "#F0F0F0",
+    backgroundColor: GlobalStyles.colors.lightAccent,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "gray",
