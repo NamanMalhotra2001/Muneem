@@ -4,7 +4,7 @@ import { ExpensesContext } from '../store/expenses-context';
 
 const RecentExpenses = () => {
 	const expensesCtx = useContext(ExpensesContext);
-	const recentExpenses = expensesCtx.expenses.slice(-5).reverse();
+	const recentExpenses = expensesCtx.expenses.slice(-5);
 
 	return (
 		<ExpensesOutput

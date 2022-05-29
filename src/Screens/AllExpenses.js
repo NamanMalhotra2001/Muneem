@@ -4,11 +4,6 @@ import { ExpensesContext } from '../store/expenses-context';
 
 const AllExpenses = () => {
 	const expensesCtx = useContext(ExpensesContext);
-	return (
-		<ExpensesOutput
-			expenses={expensesCtx.expenses.reverse()}
-			expensesPeriod={'Total'}
-		/>
-	);
+	return <ExpensesOutput expenses={expensesCtx.expenses} expensesPeriod={'Total'} />;
 };
 export default AllExpenses;
