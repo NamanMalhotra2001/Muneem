@@ -8,7 +8,7 @@ function renderExpenseItem(itemData) {
 const ExpensesList = ({ expenses }) => {
 	return (
 		<FlatList
-			style={{ marginBottom: '20%' }}
+			// style={{ marginBottom: '20%' }}
 			data={expenses}
 			renderItem={renderExpenseItem}
 			keyExtractor={(item) => item.id}
