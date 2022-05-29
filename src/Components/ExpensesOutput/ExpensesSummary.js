@@ -18,17 +18,13 @@ export default ExpensesSummary;
 
 const styles = StyleSheet.create({
 	container: {
+		marginHorizontal: 20,
+		marginVertical: 5,
 		padding: 10,
 		backgroundColor: GlobalStyles.colors.lightAccent,
-		borderRadius: 10,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		elevation: 10,
-		shadowColor: 'gray',
-		shadowOpacity: 2,
-		shadowOffset: { height: 1, width: 1 },
-		shadowRadius: 4,
 	},
 	period: {
 		fontSize: 12,
