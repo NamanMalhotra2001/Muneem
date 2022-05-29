@@ -20,3 +20,7 @@ export function getFormattedDate(date) {
 		days[date.getDay()]
 	}`;
 }
+
+export function getDateMinusDays(date, days) {
+	return new Date(date.getFullYear(), date.getMonth(), date.getDate() - days);
+}
