@@ -1,54 +1,55 @@
 import React, { useState } from "react";
 import { Box, Text } from "@react-native-material/core";
-import { TextInput, Card, Button, Title, Paragraph } from "react-native-paper";
+import { TextInput, Card, Button, Title } from "react-native-paper";
 import { GlobalStyles } from "../constants/styles";
-import { View, StyleSheet, ScrollView, StatusBar } from "react-native";
-//@ts-ignore
-// import {
-//   Card,
-//   CardTitle,
-//   CardAction,
-//   CardButton,
-//   CardImage,
-// } from "react-native-material-cards";
+import { View, StyleSheet, ScrollView } from "react-native";
 import Modal from "react-native-modal";
-// import { LogBox } from "react-native";
 
-// LogBox.ignoreLogs(["exported from 'deprecated-react-native-prop-types'."]);
+import { Dropdown } from "react-native-element-dropdown";
 const Subscriptions = () => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+  const [subValue, setSubValue] = useState("Subscription Service");
+  const [subTime, setSubTime] = useState("Subscription Duration");
+  const [subLogo, setSubLogo] = useState("Logo");
+  const [isFocus, setIsFocus] = useState(false);
+
   const [modalData, setModalData] = useState([]);
-  const [text, onChangeText] = React.useState("Useless Text");
+  const [subAmount, setSubAmount] = React.useState("1000");
   const [subData, setSubData] = useState([
     {
+      id: 1,
       name: "Netflix",
       amount: 800,
       duration: "Monthly",
       logo: "https://i.ibb.co/yXb8G4L/Netflix-Logo-Black.jpg",
     },
     {
+      id: 2,
       name: "Amazon Prime",
       amount: 1400,
       duration: "Yearly",
       logo: "https://i.ibb.co/X51mSDQ/image.png",
     },
     {
+      id: 3,
       name: "Disney+Hotstar",
       amount: 1200,
       duration: "Yearly",
       logo: "https://i.ibb.co/HGrFhrd/image.png",
     },
-    {
-      name: "Zee5",
-      amount: 1000,
-      duration: "Yearly",
-      logo: "https://i.ibb.co/pX9kLnB/Zee5-logo.jpg",
-    },
   ]);
+  const duration = [
+    {
+      time: "Monthly",
+    },
+    {
+      time: "Yearly",
+    },
+  ];
   const data = [
     {
       name: "Netflix",
@@ -84,6 +85,17 @@ const Subscriptions = () => {
   return (
     <View style={{ backgroundColor: GlobalStyles.colors.lightAccent }}>
       <ScrollView>
+        <Button
+          labelStyle={{ fontSize: 22 }}
+          uppercase={false}
+          style={{
+            backgroundColor: GlobalStyles.colors.accent,
+            margin: 10,
+          }}
+          onPress={toggleModal}
+        >
+          Add Subscription
+        </Button>
         {subData.length > 0 ? (
           subData.map((sub, index) => {
             return (
@@ -92,7 +104,7 @@ const Subscriptions = () => {
                   backgroundColor: GlobalStyles.colors.accent,
                   margin: 10,
                 }}
-                key={sub.name}
+                key={sub.id}
               >
                 <Card.Cover source={{ uri: sub.logo }} />
                 <Card.Title titleStyle={{ fontSize: 27 }} title={sub.name} />
@@ -137,26 +149,95 @@ const Subscriptions = () => {
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
             <Box style={styles.paperShadow}>
-              <Text
-                style={{
-                  textAlign: "center",
-                  margin: 20,
-                  fontSize: 20,
-                  fontWeight: "bold",
-                }}
-              >
-                {modalData.name}
-              </Text>
+              <View style={styles.container}>
+                <Dropdown
+                  style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  iconStyle={styles.iconStyle}
+                  data={data}
+                  maxHeight={300}
+                  labelField="name"
+                  valueField="amount"
+                  placeholder={subValue}
+                  value={subValue}
+                  onFocus={() => setIsFocus(true)}
+                  onBlur={() => setIsFocus(false)}
+                  onChange={(item) => {
+                    setSubValue(item.name);
+                    setSubLogo(item.logo);
+                  }}
+                />
+              </View>
+              <View style={styles.container}>
+                <Dropdown
+                  style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  iconStyle={styles.iconStyle}
+                  data={duration}
+                  maxHeight={300}
+                  labelField="time"
+                  valueField="time"
+                  placeholder={subTime}
+                  value={subTime}
+                  onFocus={() => setIsFocus(true)}
+                  onBlur={() => setIsFocus(false)}
+                  onChange={(item) => {
+                    setSubTime(item.time);
+                    console.log(item);
+                  }}
+                />
+              </View>
+
               <TextInput
                 label="Amount"
-                onChangeText={onChangeText}
-                value={text}
+                style={{
+                  backgroundColor: GlobalStyles.colors.accent,
+                  margin: 15,
+                }}
+                onChangeText={setSubAmount}
+                value={subAmount}
                 mode="outlined"
                 keyboardType="numeric"
               />
+              <Button
+                labelStyle={{ fontSize: 17 }}
+                style={{
+                  backgroundColor: GlobalStyles.colors.accent,
+                  margin: 15,
+                }}
+                onPress={() => {
+                  console.log(subData);
+                  console.log(subTime, subValue, subLogo, subAmount),
+                    setSubData([
+                      ...subData,
+                      {
+                        id: Math.random() * (1000 - 1),
+                        name: subValue,
+                        amount: subAmount,
+                        duration: subTime,
+                        logo: subLogo,
+                      },
+                    ]);
+                  toggleModal();
+                }}
+              >
+                Add
+              </Button>
+              <Button
+                labelStyle={{ fontSize: 17 }}
+                style={{
+                  backgroundColor: GlobalStyles.colors.accent,
+                  margin: 15,
+                }}
+                onPress={toggleModal}
+              >
+                Close
+              </Button>
             </Box>
-
-            {/* <Button title="Hide modal" onPress={toggleModal} /> */}
           </View>
         </Modal>
       </ScrollView>
@@ -189,7 +270,7 @@ const styles = StyleSheet.create({
   },
   paperShadow: {
     overflow: "hidden",
-    height: 200,
+    height: 400,
     boxShadow: "grey 2px 2px 10px",
     backgroundColor: GlobalStyles.colors.lightAccent,
     borderRadius: 8,
@@ -197,5 +278,29 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     margin: 20,
     width: "90%",
+  },
+  dropdown: {
+    margin: 16,
+    height: 50,
+    borderBottomColor: "gray",
+    borderBottomWidth: 0.5,
+    backgroundColor: GlobalStyles.colors.accent,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
   },
 });
