@@ -26,7 +26,8 @@ function ExpensesOverview() {
 					height: '8%',
 				},
 				tabBarItemStyle: {
-					borderRadius: 20,
+					borderTopLeftRadius: 20,
+					borderTopRightRadius: 20,
 				},
 				tabBarActiveTintColor: GlobalStyles.colors.highlight,
 				tabBarActiveBackgroundColor: GlobalStyles.colors.primary,
