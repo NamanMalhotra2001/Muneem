@@ -6,4 +6,7 @@ export const GlobalStyles = {
 		accent: '#74ffca',
 		lightAccent: '#D1FAE0',
 	},
+	symbols: {
+		rupee: '₹',
+	},
 };

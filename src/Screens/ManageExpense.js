@@ -6,10 +6,14 @@ import IconButton from '../components/UI/IconButton';
 import { GlobalStyles } from '../constants/styles';
 import { ExpensesContext } from '../store/expenses-context';
 
-const ManageExpense = ({ route, navigation }) => {
+const ManageExpenses = ({ route, navigation }) => {
+	// console.log(route);
 	const editedExpenseId = route.params?.expenseId;
 	const isEditing = !!editedExpenseId;
 	const expensesCtx = useContext(ExpensesContext);
+	const defaultValues = expensesCtx.expenses.find(
+		(expense) => expense.id === editedExpenseId
+	);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -26,28 +30,26 @@ const ManageExpense = ({ route, navigation }) => {
 		navigation.goBack();
 	}
 
-	function confirmHandler() {
+	function confirmHandler(expenseData) {
 		if (isEditing) {
-			expensesCtx.updateExpense(editedExpenseId, {
-				description: 'test!!!!',
-				amount: 100.55,
-				date: new Date(),
-			});
+			expensesCtx.updateExpense(editedExpenseId, expenseData);
 		} else {
-			expensesCtx.addExpense({
-				description: 'test',
-				amount: 125,
-				date: new Date(),
-			});
+			expensesCtx.addExpense(expenseData);
 		}
 		navigation.goBack();
 	}
 
 	return (
 		<View style={styles.container}>
-			<ExpenseForm />
+			<ExpenseForm
+				onCancel={cancelHandler}
+				isEditing={isEditing}
+				onSubmit={confirmHandler}
+				onDelete={deleteExpenseHandler}
+				defaultValues={defaultValues}
+			/>
 			<View style={{ position: 'absolute', bottom: 20, left: 0, right: 0 }}>
-				<View style={styles.buttonsContainer}>
+				{/* <View style={styles.buttonsContainer}>
 					<Button style={styles.button} mode='flat' onPress={cancelHandler}>
 						Cancel
 					</Button>
@@ -55,7 +57,7 @@ const ManageExpense = ({ route, navigation }) => {
 						{isEditing ? 'Update' : 'Add'}
 					</Button>
 					{isEditing && (
-						<View style={styles.deleteContainer}>
+						<View>
 							<IconButton
 								style={styles.deleteButton}
 								icon='trash'
@@ -65,17 +67,16 @@ const ManageExpense = ({ route, navigation }) => {
 							/>
 						</View>
 					)}
-				</View>
+				</View> */}
 			</View>
 		</View>
 	);
 };
-export default ManageExpense;
+export default ManageExpenses;
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 24,
 		backgroundColor: GlobalStyles.colors.lightAccent,
 	},
 	buttonsContainer: {
@@ -96,15 +97,5 @@ const styles = StyleSheet.create({
 		shadowOffset: { height: 1, width: 0 },
 		shadowRadius: 4,
 		shadowOpacity: 0.2,
-	},
-	deleteContainer: {
-		// position: 'absolute',
-		// bottom: 50,
-		// right: 10,
-		// marginTop: 16,
-		// paddingTop: 8,
-		// borderTopWidth: 2,
-		// borderTopColor: GlobalStyles.colors.primary,
-		// alignItems: 'center',
 	},
 });
