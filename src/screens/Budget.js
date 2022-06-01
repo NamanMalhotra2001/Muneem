@@ -119,16 +119,13 @@ const Budget = () => {
           return (
             <Card
               style={{
-                backgroundColor: GlobalStyles.colors.accent,
                 margin: 10,
               }}
               key={bud.name}
             >
               <Card.Cover source={{ uri: bud.logo }} />
               <Card.Title titleStyle={{ fontSize: 27 }} title={bud.name} />
-              <Card.Content
-                style={{ backgroundColor: GlobalStyles.colors.accent }}
-              >
+              <Card.Content>
                 <Title>Rs.{bud.amount} Budget</Title>
                 <Title>Rs.{bud.utilized} Utilized </Title>
               </Card.Content>

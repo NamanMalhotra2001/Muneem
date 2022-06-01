@@ -23,6 +23,7 @@
 		"react-dom": "17.0.2",
 		"react-native": "0.68.2",
 		"react-native-chart-kit": "^6.12.0",
+		"react-native-dropdown-menu": "github:Mig-nan/react-native-dropdown-menu#patch-1",
 		"react-native-element-dropdown": "^1.8.11",
 		"react-native-material-cards": "^1.0.16",
 		"react-native-modal": "^13.0.1",
