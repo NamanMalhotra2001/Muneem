@@ -3,13 +3,13 @@ import { GlobalStyles } from '../../constants/styles';
 import ExpensesList from './ExpensesList';
 import ExpensesSummary from './ExpensesSummary';
 
-const ExpensesOutput = ({ expenses, expensesPeriod, fallbackText }) => {
+const ExpensesOutput = ({ expenses, expensesPeriod, fallbackText, button }) => {
 	return (
 		<>
 			{expenses.length > 0 ? (
 				<View style={styles.container}>
 					<ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
-					<ExpensesList expenses={expenses} />
+					<ExpensesList expenses={expenses} button={button} />
 				</View>
 			) : (
 				<View style={styles.container}>

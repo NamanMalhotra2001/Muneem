@@ -1,9 +1,7 @@
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useRoute } from '@react-navigation/native';
 import { useState } from 'react';
 import { GlobalStyles } from '../constants/styles';
-import AllExpenses from '../screens/AllExpenses';
 import Budget from '../screens/Budget';
 import RecentExpenses from '../screens/RecentExpenses';
 import Subscriptions from '../screens/Subscriptions';
@@ -12,7 +10,6 @@ const Tab = createBottomTabNavigator();
 
 export default function ExpensesOverview() {
 	const [bottomTabIndex, setBottomTabIndex] = useState(0);
-	console.log(bottomTabIndex);
 
 	return (
 		<Tab.Navigator
@@ -68,7 +65,8 @@ export default function ExpensesOverview() {
 				name='RecentExpenses'
 				component={RecentExpenses}
 				options={{
-					title: 'Recent Expenses',
+					title: 'Home',
+					// headerShown: false,
 					tabBarLabel: 'Recent',
 					tabBarIcon: ({ color, size, focused }) => (
 						<Ionicons
@@ -79,7 +77,7 @@ export default function ExpensesOverview() {
 					),
 				}}
 			/>
-			<Tab.Screen
+			{/* <Tab.Screen
 				listeners={{
 					tabPress: (e) => {
 						// e.preventDefault();
@@ -99,7 +97,7 @@ export default function ExpensesOverview() {
 						/>
 					),
 				}}
-			/>
+			/> */}
 			<Tab.Screen
 				listeners={{
 					tabPress: (e) => {
@@ -133,8 +131,12 @@ export default function ExpensesOverview() {
 				options={{
 					title: 'Budget',
 					tabBarLabel: 'All',
-					tabBarIcon: ({ color, size }) => (
-						<Ionicons name='calendar' size={size} color={color} />
+					tabBarIcon: ({ color, size, focused }) => (
+						<FontAwesome5
+							name={focused ? 'money-bill' : 'money-bill-alt'}
+							size={size}
+							color={color}
+						/>
 					),
 				}}
 			/>

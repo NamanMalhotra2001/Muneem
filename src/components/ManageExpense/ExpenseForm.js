@@ -9,48 +9,39 @@ import Input from './Input';
 
 function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues }) {
 	// ########## states ##########
-	const [inputValues, setInputValues] = useState({
-		amount: defaultValues ? defaultValues.amount.toString() : '',
-		date: defaultValues ? defaultValues.date : '',
-		description: defaultValues ? defaultValues.description : '',
-	});
-
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+	const [inputs, setInputs] = useState({
+		amount: {
+			value: defaultValues ? defaultValues.amount.toString() : '',
+			isValid: true,
+		},
+		date: {
+			value: defaultValues ? defaultValues.date : '',
+			isValid: true,
+		},
+		description: {
+			value: defaultValues ? defaultValues.description : '',
+			isValid: true,
+		},
+	});
+	const formIsInvalid =
+		!inputs.amount.isValid || !inputs.date.isValid || !inputs.description.isValid;
 
 	// ########## handler functions ##########
-	const showDatePicker = () => {
-		setDatePickerVisibility(true);
-	};
-
-	const hideDatePicker = () => {
-		setDatePickerVisibility(false);
-	};
-
-	const handleConfirm = (date) => {
-		setInputValues((curInputValues) => {
-			return {
-				...curInputValues,
-				date: date,
-			};
-		});
-		// console.warn('A date has been picked: ', date);
-		hideDatePicker();
-	};
-
 	function inputChangedHandler(inputIdentifier, enteredValue) {
-		setInputValues((curInputValues) => {
+		setInputs((curInputValues) => {
 			return {
 				...curInputValues,
-				[inputIdentifier]: enteredValue,
+				[inputIdentifier]: { value: enteredValue, isValid: true },
 			};
 		});
 	}
 
 	function submitHandler() {
 		const expenseData = {
-			amount: +inputValues.amount,
-			date: inputValues.date,
-			description: inputValues.description,
+			amount: +inputs.amount.value,
+			date: inputs.date.value,
+			description: inputs.description.value,
 		};
 
 		const amountIsValid = !isNaN(expenseData.amount) && expenseData.amount > 0;
@@ -60,55 +51,79 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 		const descriptionIsValid = expenseData.description.trim().length > 0;
 
 		if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
-			Alert.alert('Invalid input', 'Please check your input values');
-			// setInputs((curInputs) => {
-			// 	return {
-			// 		amount: { value: curInputs.amount.value, isValid: amountIsValid },
-			// 		date: { value: curInputs.date.value, isValid: dateIsValid },
-			// 		description: {
-			// 			value: curInputs.description.value,
-			// 			isValid: descriptionIsValid,
-			// 		},
-			// 	};
-			// });
+			// Alert.alert('Invalid input', 'Please check your input values');
+			setInputs((curInputs) => {
+				return {
+					amount: { value: curInputs.amount.value, isValid: amountIsValid },
+					date: { value: curInputs.date.value, isValid: dateIsValid },
+					description: {
+						value: curInputs.description.value,
+						isValid: descriptionIsValid,
+					},
+				};
+			});
 			return;
 		}
 
 		onSubmit(expenseData);
 	}
 
+	const showDatePicker = () => {
+		setDatePickerVisibility(true);
+	};
+
+	const hideDatePicker = () => {
+		setDatePickerVisibility(false);
+	};
+
+	const handleConfirm = (date) => {
+		setInputs((curInputValues) => {
+			return {
+				...curInputValues,
+				date: { value: date, isValid: true },
+			};
+		});
+		hideDatePicker();
+	};
+
 	// ########## main start ##########
 	return (
 		<View style={styles.container}>
+			{/* // ########## amount ########## */}
 			<Input
-				style={styles.rowInput}
-				label={inputValues.amount !== '' && GlobalStyles.symbols.rupee}
+				label={inputs.amount !== '' && GlobalStyles.symbols.rupee}
 				textInputConfig={{
 					placeholder: 'Enter transaction amount',
 					keyboardType: 'decimal-pad',
 					onChangeText: inputChangedHandler.bind(this, 'amount'),
-					value: inputValues.amount,
+					value: inputs.amount.value,
 				}}
+				valid={inputs.amount.isValid}
 			/>
-
+			{/* // ########## description ########## */}
 			<Input
-				// label='Description'
 				textInputConfig={{
 					placeholder: 'Enter transaction details',
 					multiline: true,
 					onChangeText: inputChangedHandler.bind(this, 'description'),
-					value: inputValues.description,
+					value: inputs.description.value,
 				}}
+				valid={inputs.description.isValid}
 			/>
-
+			{/* // ########## date picker button ########## */}
 			<Pressable
 				style={({ pressed }) => pressed && styles.pressed}
 				onPress={showDatePicker}
 			>
-				<View style={styles.datePickerButton}>
+				<View
+					style={[
+						styles.datePickerButton,
+						!inputs.date.isValid && styles.invalid,
+					]}
+				>
 					<Text style={{ color: GlobalStyles.colors.highlight }}>
-						{inputValues.date !== ''
-							? 'date: ' + getFormattedDate(inputValues.date)
+						{inputs.date.value !== ''
+							? 'date: ' + getFormattedDate(inputs.date.value)
 							: 'Tap to select date'}
 					</Text>
 					<DateTimePickerModal
@@ -119,6 +134,13 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 					/>
 				</View>
 			</Pressable>
+			{/* // ########## Error message ########## */}
+			{formIsInvalid && (
+				<View style={styles.errorContainer}>
+					<Text style={{ color: 'red' }}>Some inputs are invalid!</Text>
+				</View>
+			)}
+			{/* // ########## Buttons ########## */}
 			<View style={{ position: 'absolute', bottom: 20, left: 0, right: 0 }}>
 				<View style={styles.buttonsContainer}>
 					<Button style={styles.button} mode='flat' onPress={onCancel}>
@@ -147,6 +169,21 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 export default ExpenseForm;
 
 const styles = StyleSheet.create({
+	invalid: {
+		borderWidth: 0.5,
+		borderColor: 'red',
+		backgroundColor: '#fff3f3',
+	},
+	errorContainer: {
+		marginHorizontal: 20,
+		backgroundColor: '#fff3f3',
+		borderRadius: 10,
+		borderColor: 'red',
+		padding: 10,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: '16%',
+	},
 	container: {
 		marginTop: '15%',
 		flex: 1,

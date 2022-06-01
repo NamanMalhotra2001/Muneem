@@ -1,20 +1,13 @@
-import { Ionicons } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, useRoute } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import IconButton from './src/components/UI/IconButton';
+import ExpensesOverview from './src/components/ExpensesOverview';
 import { GlobalStyles } from './src/constants/styles';
+import AddSubscription from './src/screens/AddSubscription';
 import AllExpenses from './src/screens/AllExpenses';
 import ManageExpenses from './src/screens/ManageExpense';
-import RecentExpenses from './src/screens/RecentExpenses';
-import Subscriptions from './src/screens/Subscriptions.js';
-import Budget from './src/screens/Budget';
 import ExpensesContextProvider from './src/store/expenses-context';
-import AddSubscription from './src/screens/AddSubscription';
-import ExpensesOverview from './src/components/ExpensesOverview';
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
 
 export default function App() {
 	return (
@@ -34,6 +27,11 @@ export default function App() {
 							name='ExpensesOverview'
 							component={ExpensesOverview}
 							options={{ headerShown: false }}
+						/>
+						<Stack.Screen
+							name='AllExpenses'
+							component={AllExpenses}
+							options={{ headerTitleAlign: 'center' }}
 						/>
 						<Stack.Screen
 							name='ManageExpense'
