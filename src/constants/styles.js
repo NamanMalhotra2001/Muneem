@@ -5,6 +5,8 @@ export const GlobalStyles = {
 		inactive: '#456443',
 		accent: '#74ffca',
 		lightAccent: '#D1FAE0',
+		error: '#ff4a4a',
+		lightError: '#fff3f3',
 	},
 	symbols: {
 		rupee: '₹',

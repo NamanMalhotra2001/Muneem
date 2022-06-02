@@ -1,15 +1,28 @@
+import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, View } from 'react-native';
 import { GlobalStyles } from '../../constants/styles';
+import IconButton from '../UI/IconButton';
+import ExpenseItem from './ExpenseItem';
 import ExpensesList from './ExpensesList';
 import ExpensesSummary from './ExpensesSummary';
 
-const ExpensesOutput = ({ expenses, expensesPeriod, fallbackText, button }) => {
+const ExpensesOutput = ({ expenses, expensesPeriod, fallbackText, button, home }) => {
+	const navigate = useNavigation();
+
 	return (
-		<>
+		</* style={home ? { height: 'auto' } : { height: '100%' }} */>
 			{expenses.length > 0 ? (
 				<View style={styles.container}>
 					<ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
-					<ExpensesList expenses={expenses} button={button} />
+					{home ? (
+						<>
+							{expenses.slice(0, 4).map((item, k) => (
+								<ExpenseItem {...item} key={k} />
+							))}
+						</>
+					) : (
+						<ExpensesList expenses={expenses} />
+					)}
 				</View>
 			) : (
 				<View style={styles.container}>
@@ -19,6 +32,50 @@ const ExpensesOutput = ({ expenses, expensesPeriod, fallbackText, button }) => {
 					</View>
 				</View>
 			)}
+			{button ? (
+				<View style={styles.buttonsContainer}>
+					<IconButton
+						onPress={() => {
+							navigate.navigate('ManageExpense');
+						}}
+						icon='add'
+						size={24}
+						color='gray'
+						style={{
+							borderRadius: 30,
+							backgroundColor: 'white',
+							width: 60,
+							alignItems: 'center',
+							justifyContent: 'center',
+							elevation: 3,
+							shadowOffset: { height: 1, width: 0 },
+							shadowRadius: 4,
+							shadowOpacity: 0.2,
+						}}
+					/>
+					<IconButton
+						onPress={() => {
+							navigate.navigate('AllExpenses');
+						}}
+						icon='ios-arrow-redo-outline'
+						size={24}
+						color='gray'
+						style={{
+							borderRadius: 30,
+							backgroundColor: 'white',
+							width: 60,
+							alignItems: 'center',
+							justifyContent: 'center',
+							elevation: 3,
+							shadowOffset: { height: 1, width: 0 },
+							shadowRadius: 4,
+							shadowOpacity: 0.2,
+						}}
+					/>
+				</View>
+			) : (
+				<></>
+			)}
 		</>
 	);
 };
@@ -26,6 +83,11 @@ const ExpensesOutput = ({ expenses, expensesPeriod, fallbackText, button }) => {
 export default ExpensesOutput;
 
 const styles = StyleSheet.create({
+	buttonsContainer: {
+		backgroundColor: GlobalStyles.colors.lightAccent,
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+	},
 	container: {
 		flex: 1,
 		paddingBottom: 0,

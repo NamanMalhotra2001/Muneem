@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useState } from 'react';
 import { GlobalStyles } from '../constants/styles';
 import Budget from '../screens/Budget';
-import RecentExpenses from '../screens/RecentExpenses';
+import Home from '../screens/Home';
 import Subscriptions from '../screens/Subscriptions';
 import IconButton from './UI/IconButton';
 const Tab = createBottomTabNavigator();
@@ -62,11 +62,11 @@ export default function ExpensesOverview() {
 						setBottomTabIndex(0);
 					},
 				}}
-				name='RecentExpenses'
-				component={RecentExpenses}
+				name='Home'
+				component={Home}
 				options={{
 					title: 'Home',
-					// headerShown: false,
+					headerShown: false,
 					tabBarLabel: 'Recent',
 					tabBarIcon: ({ color, size, focused }) => (
 						<Ionicons
