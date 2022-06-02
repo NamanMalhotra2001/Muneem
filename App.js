@@ -7,6 +7,8 @@ import AddSubscription from './src/screens/AddSubscription';
 import AllExpenses from './src/screens/AllExpenses';
 import ManageExpenses from './src/screens/ManageExpense';
 import ExpensesContextProvider from './src/store/expenses-context';
+import Intro from './src/screens/Intro';
+import LogIn from './src/screens/LogIn';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
