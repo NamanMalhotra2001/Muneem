@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
-import HomeHeader from '../components/HomeHeader/HomeHeader';
+import HomeHeader from '../components/HomePage/HomeHeader';
 import ErrorOverlay from '../components/UI/ErrorOverlay';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
+import { GlobalStyles } from '../constants/styles';
 import { ExpensesContext } from '../store/expenses-context';
 import { getDateMinusDays } from '../util/date';
 import { fetchExpenses } from '../util/http';
 
 const Home = ({ navigation }) => {
 	// ########## states ##########
-	// const [fetchedExpenses, setFetchedExpenses] = useState([]);
 	const [isFetching, setIsFetching] = useState(true);
 	const [error, setError] = useState();
 
@@ -33,7 +33,6 @@ const Home = ({ navigation }) => {
 				setError('Could not fetch data!');
 			}
 			setIsFetching(false);
-			// setFetchedExpenses(expenses);
 		}
 
 		getExpenses();
@@ -48,7 +47,7 @@ const Home = ({ navigation }) => {
 	}
 
 	return (
-		<ScrollView>
+		<ScrollView style={{ backgroundColor: GlobalStyles.colors.lightAccent }}>
 			<HomeHeader />
 			<ExpensesOutput
 				expenses={recentExpenses}

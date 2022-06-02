@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
 import { FlatList } from 'react-native';
-import IconButton from '../UI/IconButton';
 import ExpenseItem from './ExpenseItem';
 
 function renderExpenseItem(itemData) {

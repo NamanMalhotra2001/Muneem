@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { GlobalStyles } from '../../constants/styles';
-import { getFormattedDate, getFormattedDateTime } from '../../util/date';
+import { getFormattedDateTime } from '../../util/date';
 import Button from '../UI/Button';
 import IconButton from '../UI/IconButton';
 import Input from './Input';
@@ -111,7 +111,6 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 				}}
 				style={{
 					borderTopWidth: 2,
-					borderBottomWidth: 2,
 					borderColor: GlobalStyles.colors.primary,
 				}}
 				valid={inputs.description.isValid}
@@ -206,6 +205,8 @@ const styles = StyleSheet.create({
 		paddingVertical: 15,
 		padding: 15,
 		backgroundColor: 'white',
+		borderTopWidth: 2,
+		borderColor: GlobalStyles.colors.primary,
 	},
 	pressed: {
 		opacity: 0.75,

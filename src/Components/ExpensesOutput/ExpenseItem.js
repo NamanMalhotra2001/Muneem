@@ -37,10 +37,9 @@ const styles = StyleSheet.create({
 		opacity: 0.75,
 	},
 	expenseItem: {
-		margin: 10,
 		marginHorizontal: 20,
+		marginBottom: 5,
 		padding: 12,
-		marginVertical: 3,
 		flexDirection: 'row',
 		// backgroundColor: GlobalStyles.colors.accent,
 		backgroundColor: 'white',
