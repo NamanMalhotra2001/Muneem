@@ -10,7 +10,7 @@ const ExpensesOutput = ({ expenses, expensesPeriod, fallbackText, button, home }
 	const navigate = useNavigation();
 
 	return (
-		</* style={home ? { height: 'auto' } : { height: '100%' }} */>
+		<>
 			{expenses.length > 0 ? (
 				<View style={styles.container}>
 					<ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
