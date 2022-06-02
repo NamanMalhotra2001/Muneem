@@ -21,6 +21,12 @@ export function getFormattedDate(date) {
 	}`;
 }
 
+export function getFormattedDateTime(date) {
+	return `${date.getDate()}-${months[date.getMonth()]}-${date.getFullYear()}, ${
+		days[date.getDay()]
+	} - ${date.getHours()}:${date.getMinutes()}`;
+}
+
 export function getDateMinusDays(date, days) {
 	return new Date(date.getFullYear(), date.getMonth(), date.getDate() - days);
 }

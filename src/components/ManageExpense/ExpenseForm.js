@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { GlobalStyles } from '../../constants/styles';
-import { getFormattedDate } from '../../util/date';
+import { getFormattedDate, getFormattedDateTime } from '../../util/date';
 import Button from '../UI/Button';
 import IconButton from '../UI/IconButton';
 import Input from './Input';
@@ -16,7 +16,7 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 			isValid: true,
 		},
 		date: {
-			value: defaultValues ? defaultValues.date : '',
+			value: defaultValues ? defaultValues.date : new Date(),
 			isValid: true,
 		},
 		description: {
@@ -91,7 +91,7 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 		<View style={styles.container}>
 			{/* // ########## amount ########## */}
 			<Input
-				label={inputs.amount !== '' && GlobalStyles.symbols.rupee}
+				label={inputs.amount.value !== '' && GlobalStyles.symbols.rupee}
 				textInputConfig={{
 					placeholder: 'Enter transaction amount',
 					keyboardType: 'decimal-pad',
@@ -100,6 +100,7 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 				}}
 				valid={inputs.amount.isValid}
 			/>
+
 			{/* // ########## description ########## */}
 			<Input
 				textInputConfig={{
@@ -108,8 +109,14 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 					onChangeText: inputChangedHandler.bind(this, 'description'),
 					value: inputs.description.value,
 				}}
+				style={{
+					borderTopWidth: 2,
+					borderBottomWidth: 2,
+					borderColor: GlobalStyles.colors.primary,
+				}}
 				valid={inputs.description.isValid}
 			/>
+
 			{/* // ########## date picker button ########## */}
 			<Pressable
 				style={({ pressed }) => pressed && styles.pressed}
@@ -121,9 +128,15 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 						!inputs.date.isValid && styles.invalid,
 					]}
 				>
-					<Text style={{ color: GlobalStyles.colors.highlight }}>
+					<Text
+						style={{
+							color: GlobalStyles.colors.highlight,
+							fontSize: 18,
+							fontWeight: '400',
+						}}
+					>
 						{inputs.date.value !== ''
-							? 'date: ' + getFormattedDate(inputs.date.value)
+							? getFormattedDateTime(inputs.date.value)
 							: 'Tap to select date'}
 					</Text>
 					<DateTimePickerModal
@@ -134,13 +147,15 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 					/>
 				</View>
 			</Pressable>
+
 			{/* // ########## Error message ########## */}
 			{formIsInvalid && (
 				<View style={styles.errorContainer}>
 					<Text style={{ color: 'red' }}>Some inputs are invalid!</Text>
 				</View>
 			)}
-			{/* // ########## Buttons ########## */}
+
+			{/* // ########## add/update - delete - cancel buttons ########## */}
 			<View style={{ position: 'absolute', bottom: 20, left: 0, right: 0 }}>
 				<View style={styles.buttonsContainer}>
 					<Button style={styles.button} mode='flat' onPress={onCancel}>
@@ -185,15 +200,12 @@ const styles = StyleSheet.create({
 		marginTop: '16%',
 	},
 	container: {
-		marginTop: '15%',
 		flex: 1,
 	},
 	datePickerButton: {
-		marginHorizontal: 20,
-		marginTop: 8,
-		padding: 10,
+		paddingVertical: 15,
+		padding: 15,
 		backgroundColor: 'white',
-		borderRadius: 10,
 	},
 	pressed: {
 		opacity: 0.75,
