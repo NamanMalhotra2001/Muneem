@@ -30,7 +30,7 @@ const Home = ({ navigation }) => {
 				const expenses = await fetchExpenses();
 				expensesCtx.setExpenses(expenses);
 			} catch (error) {
-				setError('Could not fetch data!');
+				setError();
 			}
 			setIsFetching(false);
 		}
@@ -38,8 +38,12 @@ const Home = ({ navigation }) => {
 		getExpenses();
 	}, []);
 
+	function errorHandler() {
+		setError(null);
+	}
+
 	if (error && !isFetching) {
-		return <ErrorOverlay message={error} />;
+		return <ErrorOverlay message={error} onConfirm={errorHandler} />;
 	}
 
 	if (isFetching) {

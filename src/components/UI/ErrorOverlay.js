@@ -1,12 +1,22 @@
 import { View, StyleSheet, Text } from 'react-native';
 
 import { GlobalStyles } from '../../constants/styles';
+import Button from './Button';
 
-function ErrorOverlay({ message }) {
+function ErrorOverlay({ message, onConfirm }) {
 	return (
 		<View style={styles.container}>
 			<Text style={[styles.text, styles.title]}>An error occurred!</Text>
 			<Text style={styles.text}>{message}</Text>
+			<Button
+				onPress={onConfirm}
+				style={{
+					width: 100,
+					marginTop: 20,
+				}}
+			>
+				Okay
+			</Button>
 		</View>
 	);
 }
@@ -19,7 +29,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: 24,
-		backgroundColor: GlobalStyles.colors.lightAccent,
+		backgroundColor: GlobalStyles.colors.lightError,
 	},
 	text: {
 		color: GlobalStyles.colors.error,

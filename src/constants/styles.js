@@ -5,7 +5,7 @@ export const GlobalStyles = {
 		inactive: '#456443',
 		accent: '#74ffca',
 		lightAccent: '#D1FAE0',
-		error: '#ff4a4a',
+		error: '#f06d62',
 		lightError: '#fff3f3',
 	},
 	symbols: {

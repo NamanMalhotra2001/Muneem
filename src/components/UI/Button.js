@@ -8,7 +8,7 @@ const Button = ({ children, onPress, mode, style }) => {
 				onPress={onPress}
 				style={({ pressed }) => pressed && styles.pressed}
 			>
-				<View style={[styles.button, mode === 'flat' && styles.flat]}>
+				<View style={[styles.button, mode === 'flat' && styles.flat, style.view]}>
 					<Text style={[styles.buttonText, mode === 'flat' && styles.flatText]}>
 						{children}
 					</Text>

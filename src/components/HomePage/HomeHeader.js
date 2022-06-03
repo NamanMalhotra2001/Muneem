@@ -13,7 +13,7 @@ export default HomeHeader;
 const styles = StyleSheet.create({
 	container: {
 		paddingTop: '6%',
-		height: 250,
+		height: 200,
 		backgroundColor: GlobalStyles.colors.accent,
 	},
 });

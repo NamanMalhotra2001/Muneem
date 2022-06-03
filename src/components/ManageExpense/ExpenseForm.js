@@ -110,8 +110,7 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 					value: inputs.description.value,
 				}}
 				style={{
-					borderTopWidth: 2,
-					borderColor: GlobalStyles.colors.primary,
+					borderTopWidth: 0.5,
 				}}
 				valid={inputs.description.isValid}
 			/>
@@ -168,7 +167,7 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 							<IconButton
 								style={styles.deleteButton}
 								icon='trash'
-								color='#ff5454'
+								color={GlobalStyles.colors.error}
 								size={24}
 								onPress={onDelete}
 							/>
@@ -205,8 +204,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 15,
 		padding: 15,
 		backgroundColor: 'white',
-		borderTopWidth: 2,
-		borderColor: GlobalStyles.colors.primary,
+		borderTopWidth: 0.5,
 	},
 	pressed: {
 		opacity: 0.75,
