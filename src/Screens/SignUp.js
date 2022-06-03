@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Input, Icon, Stack, Center, NativeBaseProvider, Text, Button, HStack } from "native-base";
+import { Input, Icon, Stack, Center, NativeBaseProvider, Text, Button } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import { GlobalStyles } from '../constants/styles';
 
-const LogIn = ({route,navigation}) => {
+const SignUp = ({route,navigation}) => {
     const [show, setShow] = React.useState(false);
     const [formData, setFormData] = useState({
         email: "",
-        password: "",
+        password_1: "",
+        password_2: "",
     });
     const styles = StyleSheet.create({
         paperShadow: {
@@ -60,7 +61,7 @@ const LogIn = ({route,navigation}) => {
             <Center flex={1} px="3">
                 <Stack space={4} w="100%" alignItems="center">
                     <Text style={styles.leftAlign} bold fontSize="xl" mb="4">
-                        Log in
+                        Create account
                     </Text>
                     <Input w={{
                         base: "75%",
@@ -71,12 +72,16 @@ const LogIn = ({route,navigation}) => {
                         base: "75%",
                         md: "25%"
                     }} type={show ? "text" : "password"} InputRightElement={<Icon as={<MaterialIcons name={show ? "visibility" : "visibility-off"} />} size={5} mr="2" color="muted.400" onPress={() => setShow(!show)} />} placeholder="Password"
-                        onChangeText={(text) => (setFormData((oldData) => ({ ...oldData, password: text })))}
+                        onChangeText={(text) => (setFormData((oldData) => ({ ...oldData, password_1: text })))}
                     />
-                    <Button style={styles.leftAlign} backgroundColor={GlobalStyles.colors.highlight} onPress={() => (console.log(formData))} size="sm">Sign in</Button>
-                    <Button onPress={() => (navigation.navigate('SignUp',{}))} styles={styles.leftAlign} variant="unstyled"> New to Us? Sign Up</Button>
-
-
+                    <Input w={{
+                        base: "75%",
+                        md: "25%"
+                    }} type={show ? "text" : "password"} InputRightElement={<Icon as={<MaterialIcons name={show ? "visibility" : "visibility-off"} />} size={5} mr="2" color="muted.400" onPress={() => setShow(!show)} />} placeholder="Re-Enter Password"
+                        onChangeText={(text) => (setFormData((oldData) => ({ ...oldData, password_2: text })))}
+                    />
+                    <Button style={styles.leftAlign} backgroundColor={GlobalStyles.colors.highlight} onPress={() => (console.log(formData))} size="sm">Sign up</Button>
+                    <Button  onPress={() => (navigation.navigate('LogIn',{}))} styles={styles.leftAlign} variant="unstyled"> Have an account? Log In</Button>
                 </Stack>
             </Center>
             <View style={styles.bottomHalfCircle}></View>
@@ -85,4 +90,4 @@ const LogIn = ({route,navigation}) => {
 
 }
 
-export default LogIn;
+export default SignUp;

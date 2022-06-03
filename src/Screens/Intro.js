@@ -6,7 +6,7 @@ import { View, StatusBar, SafeAreaView, Text, ScrollView, Dimensions } from 'rea
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { GlobalStyles } from '../constants/styles';
 
-const Intro = () => {
+const Intro = ({route,navigation}) => {
     const { width, height } = Dimensions.get('window');
     const renderSlide = ({ item }) => {
         return (
@@ -28,7 +28,9 @@ const Intro = () => {
     const onDone = () => {
         // User finished the introduction. Show real app through
         // navigation or simply by controlling state
+        navigation.navigate('SignUp',{})
         console.log('done');
+
 
     }
     const renderDoneButton = () => {

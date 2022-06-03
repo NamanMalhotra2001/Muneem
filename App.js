@@ -9,6 +9,7 @@ import ManageExpenses from './src/screens/ManageExpense';
 import ExpensesContextProvider from './src/store/expenses-context';
 import Intro from './src/screens/Intro';
 import LogIn from './src/screens/LogIn';
+import SignUp from './src/screens/SignUp';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -26,8 +27,24 @@ export default function App() {
 						}}
 					>
 						<Stack.Screen
+							name='Intro'
+							component={Intro}
+							options={{ headerShown: false }}
+						/>
+						<Stack.Screen
+							name='LogIn'
+							component={LogIn}
+							options={{ headerShown: false }}
+						/>
+						<Stack.Screen
 							name='ExpensesOverview'
 							component={ExpensesOverview}
+							options={{ headerShown: false }}
+						/>
+						
+						<Stack.Screen
+							name='SignUp'
+							component={SignUp}
 							options={{ headerShown: false }}
 						/>
 						<Stack.Screen
