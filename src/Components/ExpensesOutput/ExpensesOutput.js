@@ -16,7 +16,7 @@ const ExpensesOutput = ({ expenses, expensesPeriod, fallbackText, button, home }
 					<ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
 					{home ? (
 						<>
-							{expenses.slice(0, 4).map((item, k) => (
+							{expenses.slice(0, 5).map((item, k) => (
 								<ExpenseItem {...item} key={k} />
 							))}
 						</>

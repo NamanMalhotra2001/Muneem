@@ -17,7 +17,7 @@ const SignUp = ({route,navigation}) => {
             height: '60%',
             borderWidth: 4,
             borderRadius: 10,
-            borderColor: '#ddd',
+            borderColor: '#ddd',2
             shadowColor: '#ddd',
             shadowOffset: { width: 0, height: 0 },
             shadowOpacity: 0.9,

@@ -26,7 +26,7 @@ export default function App() {
 							headerTintColor: GlobalStyles.colors.highlight,
 						}}
 					>
-						<Stack.Screen
+						{/* <Stack.Screen
 							name='Intro'
 							component={Intro}
 							options={{ headerShown: false }}
@@ -37,14 +37,13 @@ export default function App() {
 							options={{ headerShown: false }}
 						/>
 						<Stack.Screen
-							name='ExpensesOverview'
-							component={ExpensesOverview}
-							options={{ headerShown: false }}
-						/>
-						
-						<Stack.Screen
 							name='SignUp'
 							component={SignUp}
+							options={{ headerShown: false }}
+						/> */}
+						<Stack.Screen
+							name='ExpensesOverview'
+							component={ExpensesOverview}
 							options={{ headerShown: false }}
 						/>
 						<Stack.Screen

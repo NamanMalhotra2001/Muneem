@@ -21,6 +21,10 @@ export function getFormattedDate(date) {
 	}`;
 }
 
+export function getMonth(date) {
+	return `${months[date.getMonth()]}`;
+}
+
 export function getFormattedDateTime(date) {
 	return `${date.getDate()}-${months[date.getMonth()]}-${date.getFullYear()}, ${
 		days[date.getDay()]
