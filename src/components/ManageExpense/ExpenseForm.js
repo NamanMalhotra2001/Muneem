@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { GlobalStyles } from '../../constants/styles';
 import { getFormattedDateTime } from '../../util/date';
@@ -39,7 +39,7 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 
 	function submitHandler() {
 		const expenseData = {
-			amount: +inputs.amount.value,
+			amount: +(+inputs.amount.value).toFixed(2),
 			date: inputs.date.value,
 			description: inputs.description.value,
 		};
@@ -51,7 +51,7 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 		const descriptionIsValid = expenseData.description.trim().length > 0;
 
 		if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
-			// Alert.alert('Invalid input', 'Please check your input values');
+			Alert.alert('Invalid input', 'Please check your input values');
 			setInputs((curInputs) => {
 				return {
 					amount: { value: curInputs.amount.value, isValid: amountIsValid },
@@ -145,13 +145,6 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 					/>
 				</View>
 			</Pressable>
-
-			{/* // ########## Error message ########## */}
-			{formIsInvalid && (
-				<View style={styles.errorContainer}>
-					<Text style={{ color: 'red' }}>Some inputs are invalid!</Text>
-				</View>
-			)}
 
 			{/* // ########## add/update - delete - cancel buttons ########## */}
 			<View style={{ position: 'absolute', bottom: 20, left: 0, right: 0 }}>

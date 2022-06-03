@@ -29,6 +29,7 @@ const ManageExpenses = ({ route, navigation }) => {
 			if (isEditing) {
 				expensesCtx.updateExpense(editedExpenseId, expenseData);
 				await updateExpense(editedExpenseId, expenseData);
+				navigation.goBack();
 			} else {
 				const id = await storeExpense(expenseData);
 				expensesCtx.addExpense({ ...expenseData, id: id });
