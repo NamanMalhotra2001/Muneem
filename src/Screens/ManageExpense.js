@@ -19,7 +19,7 @@ const ManageExpenses = ({ route, navigation }) => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: isEditing ? 'Edit Expense' : 'Add Expense',
+			title: isEditing ? 'Edit Transaction' : 'Add Transaction',
 		});
 	}, []);
 

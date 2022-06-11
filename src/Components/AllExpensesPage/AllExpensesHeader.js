@@ -8,56 +8,64 @@ import { GlobalStyles } from '../../constants/styles';
 import { getMonth } from '../../util/date';
 import IconButton from '../UI/IconButton';
 
-const AllExpensesHeader = ({applyFilterForMonth}) => {
+const AllExpensesHeader = ({ applyFilterForMonth }) => {
 	const navigation = useNavigation();
 	const [dummy, setDummy] = useState({
-		spent: 7650.00,
+		spent: 7650.0,
 		budget: 10000.0,
 	});
 	const daysInThisMonth = () => {
 		var now = new Date();
-		return  new Date(now.getFullYear(), month + 1, 0).getDate();
-	}
+		return new Date(now.getFullYear(), month + 1, 0).getDate();
+	};
 	const amountSpendablePerDay = () => {
-		return ((dummy.budget - dummy.spent) / (daysInThisMonth() - new Date().getDate())).toFixed()
-	}
+		return (
+			(dummy.budget - dummy.spent) /
+			(daysInThisMonth() - new Date().getDate())
+		).toFixed();
+	};
 	const percentage = (dummy.spent / dummy.budget) * 100;
 	const [color, setColor] = useState('#ffffffff');
 	const [secColor, setSecColor] = useState('#ffffffff');
-	const [month, setMonth] = useState(new Date().getMonth())
+	const [month, setMonth] = useState(new Date().getMonth());
 	return (
 		<View style={styles.container}>
-
 			{/* // ########## left container ########## */}
 			<View style={styles.leftContainer}>
 				<IconButton
 					icon='arrow-back'
 					size={25}
-					color={color} 
+					color={color}
 					onPress={() => navigation.goBack()}
 				/>
-				<Select selectedValue={month} minWidth="200"  accessibilityLabel="Choose Month" placeholder="Choose Month" _selectedItem={{
-					bg: "teal.600",
-					endIcon: <CheckIcon size="5" />
-				}} mt={1} onValueChange={itemValue => {setMonth(itemValue)
-				, applyFilterForMonth(itemValue)
-				}}>
-					<Select.Item label="January" value={0} />
-					<Select.Item label="February" value={1} />
-					<Select.Item label="March" value={2} />
-					<Select.Item label="April" value={3} />
-					<Select.Item label="May" value={4} />
-					<Select.Item label="June" value={5} />
-					<Select.Item label="July" value={6} />
-					<Select.Item label="August" value={7} />
-					<Select.Item label="September" value={8} />
-					<Select.Item label="October" value={9} />
-					<Select.Item label="November" value={10} />
-					<Select.Item label="December" value={11} />
+				<Select
+					selectedValue={month}
+					minWidth='200'
+					accessibilityLabel='Choose Month'
+					placeholder='Choose Month'
+					_selectedItem={{
+						bg: GlobalStyles.colors.primary,
+						// endIcon: <CheckIcon size="5" />
+					}}
+					mt={1}
+					onValueChange={(itemValue) => {
+						setMonth(itemValue), applyFilterForMonth(itemValue);
+					}}
+				>
+					<Select.Item label='January' value={0} />
+					<Select.Item label='February' value={1} />
+					<Select.Item label='March' value={2} />
+					<Select.Item label='April' value={3} />
+					<Select.Item label='May' value={4} />
+					<Select.Item label='June' value={5} />
+					<Select.Item label='July' value={6} />
+					<Select.Item label='August' value={7} />
+					<Select.Item label='September' value={8} />
+					<Select.Item label='October' value={9} />
+					<Select.Item label='November' value={10} />
+					<Select.Item label='December' value={11} />
 				</Select>
 				{/* // ########## circle ########## */}
-
-
 			</View>
 			<View style={styles.statContainer}>
 				<View style={styles.stat}>
@@ -65,9 +73,11 @@ const AllExpensesHeader = ({applyFilterForMonth}) => {
 						style={{
 							color: 'white',
 							fontSize: 16,
-							textAlign: 'center'
+							textAlign: 'center',
 						}}
-					>Safe to spend</Text>
+					>
+						Safe to spend
+					</Text>
 					<CircularProgress
 						radius={45}
 						value={(dummy.spent / dummy.budget) * 100}
@@ -79,14 +89,12 @@ const AllExpensesHeader = ({applyFilterForMonth}) => {
 						inActiveStrokeOpacity={0.4}
 					/>
 
-
 					<View style={styles.infoContainer}>
 						{/* // ########## month text ########## */}
 
 						{/* // ########## spent text ########## */}
 
 						<View style={styles.spentAmountContainer}>
-
 							<Text
 								style={{
 									color: 'white',
@@ -105,31 +113,34 @@ const AllExpensesHeader = ({applyFilterForMonth}) => {
 								{amountSpendablePerDay()}
 							</Text>
 						</View>
-						<Text style={{
-							position: 'absolute',
-							left: 55,
-							top: 60,
-							color: 'white',
-							fontSize: 14,
-							textAlign: 'center'
-						}}>Per day</Text>
-
-
+						<Text
+							style={{
+								position: 'absolute',
+								left: 55,
+								top: 60,
+								color: 'white',
+								fontSize: 14,
+								textAlign: 'center',
+							}}
+						>
+							Per day
+						</Text>
 					</View>
 				</View>
 				<View style={styles.stat}>
 					<View>
 						<Text style={styles.smallHeader}>Total Spent</Text>
-						<Text style={styles.Value}><Text
-							style={{
-								color: 'white',
-								fontSize: 12,
-								marginTop: 2,
-								marginRight: 5,
-							}}
-						>
-							{GlobalStyles.symbols.rupee}
-						</Text>
+						<Text style={styles.Value}>
+							<Text
+								style={{
+									color: 'white',
+									fontSize: 12,
+									marginTop: 2,
+									marginRight: 5,
+								}}
+							>
+								{GlobalStyles.symbols.rupee}
+							</Text>
 							<Text
 								style={{
 									fontSize: 16,
@@ -138,22 +149,24 @@ const AllExpensesHeader = ({applyFilterForMonth}) => {
 								}}
 							>
 								{dummy.spent.toFixed(2)}
-							</Text></Text>
+							</Text>
+						</Text>
 					</View>
 				</View>
 				<View style={styles.stat}>
 					<View style={styles.dividedHorizontal}>
 						<Text style={styles.smallHeader}>Total Income</Text>
-						<Text style={styles.Value}><Text
-							style={{
-								color: 'white',
-								fontSize: 12,
-								marginTop: 2,
-								marginRight: 5,
-							}}
-						>
-							{GlobalStyles.symbols.rupee}
-						</Text>
+						<Text style={styles.Value}>
+							<Text
+								style={{
+									color: 'white',
+									fontSize: 12,
+									marginTop: 2,
+									marginRight: 5,
+								}}
+							>
+								{GlobalStyles.symbols.rupee}
+							</Text>
 							<Text
 								style={{
 									fontSize: 16,
@@ -162,11 +175,11 @@ const AllExpensesHeader = ({applyFilterForMonth}) => {
 								}}
 							>
 								{25000}
-							</Text></Text>
+							</Text>
+						</Text>
 					</View>
 				</View>
 			</View>
-
 		</View>
 	);
 };
@@ -182,22 +195,22 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		width: '100%',
-		height: '20%', 
+		height: '20%',
 	},
 	stat: {
 		width: '33%',
 		padding: 0,
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	container: {
 		flexDirection: 'column',
 		paddingTop: '7%',
 		height: 210,
-		backgroundColor: GlobalStyles.colors.primary, 
-		paddingBottom : 5,
+		backgroundColor: GlobalStyles.colors.primary,
+		paddingBottom: 5,
 	},
-	leftContainer: { 
+	leftContainer: {
 		flexDirection: 'row',
 		position: 'relative',
 		justifyContent: 'flex-start',
@@ -238,7 +251,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		width: 81,
 		justifyContent: 'center',
-		alignItems: 'center', 
+		alignItems: 'center',
 		borderColor: 'red',
 	},
 });

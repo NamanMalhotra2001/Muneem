@@ -6,13 +6,13 @@ import { getFormattedDate } from '../../util/date';
 const ExpenseItem = ({ id, description, amount, date }) => {
 	const navigation = useNavigation();
 
-	function expemsePressHandler() {
+	function expensePressHandler() {
 		navigation.navigate('ManageExpense', { expenseId: id });
 	}
 
 	return (
 		<Pressable
-			onPress={expemsePressHandler}
+			onPress={expensePressHandler}
 			style={({ pressed }) => pressed && styles.pressed}
 		>
 			<View style={styles.expenseItem}>

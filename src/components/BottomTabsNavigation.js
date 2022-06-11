@@ -105,7 +105,7 @@ export default function BottomTabsNavigation() {
 						setBottomTabIndex(2);
 					},
 				}}
-				name='Subscriptionss'
+				name='Subscriptions'
 				component={Subscriptions}
 				options={{
 					title: 'Subscriptions',

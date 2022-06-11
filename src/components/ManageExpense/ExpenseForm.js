@@ -11,6 +11,10 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 	// ########## states ##########
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 	const [inputs, setInputs] = useState({
+		title: {
+			value: defaultValues ? defaultValues.title : '',
+			isValid: true,
+		},
 		amount: {
 			value: defaultValues ? defaultValues.amount.toString() : '',
 			isValid: true,
@@ -19,11 +23,26 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 			value: defaultValues ? defaultValues.date : new Date(),
 			isValid: true,
 		},
+		category: {
+			value: defaultValues ? defaultValues.category : 'cat',
+			isValid: true,
+		},
+		account: {
+			value: defaultValues ? defaultValues.account : '',
+			isValid: true,
+		},
+		isExpense: {
+			value: defaultValues ? defaultValues.isExpense : '',
+			isValid: true,
+		},
 		description: {
 			value: defaultValues ? defaultValues.description : '',
 			isValid: true,
 		},
 	});
+
+	console.log(inputs);
+
 	const formIsInvalid =
 		!inputs.amount.isValid || !inputs.date.isValid || !inputs.description.isValid;
 
@@ -38,9 +57,14 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 	}
 
 	function submitHandler() {
+		console.log(inputs);
 		const expenseData = {
+			title: inputs.title.value,
 			amount: +(+inputs.amount.value).toFixed(2),
 			date: inputs.date.value,
+			category: inputs.category.value,
+			account: inputs.account.value,
+			isExpense: inputs.isExpense.value,
 			description: inputs.description.value,
 		};
 
@@ -89,6 +113,17 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 	// ########## main start ##########
 	return (
 		<View style={styles.container}>
+			{/* // ########## title ########## */}
+			<Input
+				textInputConfig={{
+					maxLength: 20,
+					placeholder: 'Enter transaction title',
+					onChangeText: inputChangedHandler.bind(this, 'title'),
+					value: inputs.title.value,
+				}}
+				valid={inputs.title.isValid}
+			/>
+
 			{/* // ########## amount ########## */}
 			<Input
 				label={inputs.amount.value !== '' && GlobalStyles.symbols.rupee}
@@ -98,21 +133,10 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 					onChangeText: inputChangedHandler.bind(this, 'amount'),
 					value: inputs.amount.value,
 				}}
-				valid={inputs.amount.isValid}
-			/>
-
-			{/* // ########## description ########## */}
-			<Input
-				textInputConfig={{
-					placeholder: 'Enter transaction details',
-					multiline: true,
-					onChangeText: inputChangedHandler.bind(this, 'description'),
-					value: inputs.description.value,
-				}}
 				style={{
 					borderTopWidth: 0.5,
 				}}
-				valid={inputs.description.isValid}
+				valid={inputs.amount.isValid}
 			/>
 
 			{/* // ########## date picker button ########## */}
@@ -145,6 +169,26 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 					/>
 				</View>
 			</Pressable>
+
+			{/* // ########## category ########## */}
+
+			{/* // ########## account ########## */}
+
+			{/* // ########## isExpense ########## */}
+
+			{/* // ########## description ########## */}
+			<Input
+				textInputConfig={{
+					placeholder: 'Enter transaction details',
+					multiline: true,
+					onChangeText: inputChangedHandler.bind(this, 'description'),
+					value: inputs.description.value,
+				}}
+				style={{
+					borderTopWidth: 0.5,
+				}}
+				valid={inputs.description.isValid}
+			/>
 
 			{/* // ########## add/update - delete - cancel buttons ########## */}
 			<View style={{ position: 'absolute', bottom: 20, left: 0, right: 0 }}>

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
+import HomeAccountsOverview from '../components/HomePage/HomeAccountsOverview';
 import HomeHeader from '../components/HomePage/HomeHeader';
 import ErrorOverlay from '../components/UI/ErrorOverlay';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
@@ -60,6 +61,7 @@ const Home = ({ navigation }) => {
 				button={true}
 				home={true}
 			/>
+			<HomeAccountsOverview expenses={recentExpenses} />
 		</ScrollView>
 	);
 };

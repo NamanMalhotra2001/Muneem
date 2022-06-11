@@ -7,7 +7,7 @@ import ExpensesList from './ExpensesList';
 import ExpensesSummary from './ExpensesSummary';
 
 const ExpensesOutput = ({ expenses, expensesPeriod, fallbackText, button, home }) => {
-	const navigate = useNavigation();
+	const navigation = useNavigation();
 
 	return (
 		<>
@@ -36,7 +36,7 @@ const ExpensesOutput = ({ expenses, expensesPeriod, fallbackText, button, home }
 				<View style={styles.buttonsContainer}>
 					<IconButton
 						onPress={() => {
-							navigate.navigate('ManageExpense');
+							navigation.navigate('ManageExpense');
 						}}
 						icon='add'
 						size={24}
@@ -55,7 +55,7 @@ const ExpensesOutput = ({ expenses, expensesPeriod, fallbackText, button, home }
 					/>
 					<IconButton
 						onPress={() => {
-							navigate.navigate('AllExpenses');
+							navigation.navigate('AllExpenses', { currentPage: 0 });
 						}}
 						icon='ios-arrow-redo-outline'
 						size={24}

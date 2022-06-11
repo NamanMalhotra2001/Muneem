@@ -4,16 +4,16 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { GlobalStyles } from '../../constants/styles';
-import AllExpenses from '../../screens/AllExpenses';
 import { getMonth } from '../../util/date';
 import IconButton from '../UI/IconButton';
 
 const HomeHeader = () => {
+	const navigation = useNavigation();
+
 	const [dummy, setDummy] = useState({
 		spent: 5400.32,
 		budget: 10000.0,
 	});
-	const navigation = useNavigation();
 	const percentage = (dummy.spent / dummy.budget) * 100;
 	const [color, setColor] = useState('#ffffffff');
 	const [secColor, setSecColor] = useState('#ffffffff');
@@ -129,7 +129,7 @@ const HomeHeader = () => {
 						marginTop: 45,
 						// backgroundColor: '#5e5e5e8a',
 					}}
-					onPress={() => (navigation.navigate('AllExpenses',{currentPage : 1}))}
+					onPress={() => navigation.navigate('AllExpenses', { currentPage: 1 })}
 				/>
 
 				{/* // ########## income ########## */}
@@ -161,7 +161,7 @@ export default HomeHeader;
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		paddingTop: '7%',
+		paddingTop: 25,
 		height: 210,
 		backgroundColor: GlobalStyles.colors.primary,
 	},
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
 	},
 	infoContainer: {
 		position: 'absolute',
-		top: 30,
+		top: 33,
 		left: 22,
 		justifyContent: 'center',
 		alignItems: 'center',
