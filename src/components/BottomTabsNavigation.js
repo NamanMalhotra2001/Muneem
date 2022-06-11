@@ -21,7 +21,7 @@ export default function BottomTabsNavigation() {
 				headerTintColor: GlobalStyles.colors.highlight,
 				tabBarShowLabel: false,
 				tabBarStyle: {
-					height: '8%',
+					height: 60,
 				},
 				tabBarItemStyle: {
 					borderTopLeftRadius: 20,
