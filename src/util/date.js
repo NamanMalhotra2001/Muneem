@@ -13,6 +13,21 @@ const months = [
 	'Dec',
 ];
 
+const longMonths = [
+	'January',
+	'February',
+	'March',
+	'April',
+	'May',
+	'June',
+	'July',
+	'August',
+	'September',
+	'October',
+	'November',
+	'December',
+];
+
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export function getFormattedDate(date) {
@@ -22,7 +37,7 @@ export function getFormattedDate(date) {
 }
 
 export function getMonth(date) {
-	return `${months[date.getMonth()]}`;
+	return `${longMonths[date.getMonth()]}`;
 }
 
 export function getFormattedDateTime(date) {

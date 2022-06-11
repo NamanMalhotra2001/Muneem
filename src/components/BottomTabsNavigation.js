@@ -8,7 +8,7 @@ import Subscriptions from '../screens/Subscriptions';
 import IconButton from './UI/IconButton';
 const Tab = createBottomTabNavigator();
 
-export default function ExpensesOverview() {
+export default function BottomTabsNavigation() {
 	const [bottomTabIndex, setBottomTabIndex] = useState(0);
 
 	return (

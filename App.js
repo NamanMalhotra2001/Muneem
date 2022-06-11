@@ -1,21 +1,26 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import ExpensesOverview from './src/components/ExpensesOverview';
+import BottomTabsNavigation from './src/components/BottomTabsNavigation';
 import { GlobalStyles } from './src/constants/styles';
 import AddSubscription from './src/screens/AddSubscription';
 import AllExpenses from './src/screens/AllExpenses';
-import ManageExpenses from './src/screens/ManageExpense';
-import ExpensesContextProvider from './src/store/expenses-context';
 import Intro from './src/screens/Intro';
 import LogIn from './src/screens/LogIn';
+import ManageExpenses from './src/screens/ManageExpense';
 import SignUp from './src/screens/SignUp';
+import ExpensesContextProvider from './src/store/expenses-context';
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
 	return (
 		<>
-			<StatusBar style='auto' />
+			<StatusBar
+				style='auto'
+				animated={true}
+				backgroundColor={GlobalStyles.colors.primary}
+			/>
 			<ExpensesContextProvider>
 				<NavigationContainer>
 					<Stack.Navigator
@@ -25,8 +30,9 @@ export default function App() {
 							},
 							headerTintColor: GlobalStyles.colors.highlight,
 						}}
+						initialRouteName={'BottomTabsNavigation'}
 					>
-						{/* <Stack.Screen
+						<Stack.Screen
 							name='Intro'
 							component={Intro}
 							options={{ headerShown: false }}
@@ -40,10 +46,10 @@ export default function App() {
 							name='SignUp'
 							component={SignUp}
 							options={{ headerShown: false }}
-						/> */}
+						/>
 						<Stack.Screen
-							name='ExpensesOverview'
-							component={ExpensesOverview}
+							name='BottomTabsNavigation'
+							component={BottomTabsNavigation}
 							options={{ headerShown: false }}
 						/>
 						<Stack.Screen
