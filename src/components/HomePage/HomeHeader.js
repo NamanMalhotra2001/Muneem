@@ -1,8 +1,10 @@
 import { Feather } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { GlobalStyles } from '../../constants/styles';
+import AllExpenses from '../../screens/AllExpenses';
 import { getMonth } from '../../util/date';
 import IconButton from '../UI/IconButton';
 
@@ -11,6 +13,7 @@ const HomeHeader = () => {
 		spent: 5400.32,
 		budget: 10000.0,
 	});
+	const navigation = useNavigation();
 	const percentage = (dummy.spent / dummy.budget) * 100;
 	const [color, setColor] = useState('#ffffffff');
 	const [secColor, setSecColor] = useState('#ffffffff');
@@ -126,6 +129,7 @@ const HomeHeader = () => {
 						marginTop: 45,
 						// backgroundColor: '#5e5e5e8a',
 					}}
+					onPress={() => (navigation.navigate('AllExpenses',{currentPage : 1}))}
 				/>
 
 				{/* // ########## income ########## */}

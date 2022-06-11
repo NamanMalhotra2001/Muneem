@@ -55,7 +55,7 @@ export default function App() {
 						<Stack.Screen
 							name='AllExpenses'
 							component={AllExpenses}
-							options={{ headerTitleAlign: 'center' }}
+							options={{ headerShown: false }}
 						/>
 						<Stack.Screen
 							name='ManageExpense'

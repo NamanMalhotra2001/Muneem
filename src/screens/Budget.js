@@ -1,5 +1,5 @@
 import { Box } from "@react-native-material/core";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Dimensions } from "react-native";
 import React, { useState } from "react";
 import { GlobalStyles } from "../constants/styles";
 import { PieChart } from "react-native-chart-kit";
@@ -8,7 +8,8 @@ import Modal from "react-native-modal";
 
 const Budget = () => {
   const [isModalVisible, setModalVisible] = useState(false);
-
+  const width = Dimensions.get('window').width;
+  const height = Dimensions.get('window').height;
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -114,34 +115,41 @@ const Budget = () => {
           center={[0, 0]}
           absolute
         />
+        <View style={styles.cardContainer}>
+          {budget.map((bud, index) => {
+            return (
+              <Card
+                style={{
+                  margin: 10,
+                  width: 170,
+                  height: 300,
 
-        {budget.map((bud, index) => {
-          return (
-            <Card
-              style={{
-                margin: 10,
-              }}
-              key={bud.name}
-            >
-              <Card.Cover source={{ uri: bud.logo }} />
-              <Card.Title titleStyle={{ fontSize: 27 }} title={bud.name} />
-              <Card.Content>
-                <Title>Rs.{bud.amount} Budget</Title>
-                <Title>Rs.{bud.utilized} Utilized </Title>
-              </Card.Content>
-              <Card.Actions>
-                <Button
-                  onPress={() => {
-                    setPos(index);
-                    toggleModal();
-                  }}
-                >
-                  Change Budget
-                </Button>
-              </Card.Actions>
-            </Card>
-          );
-        })}
+                }}
+                key={bud.name}
+              >
+                <Card.Cover style={{ height: '45%' }} source={{ uri: bud.logo }} />
+                <Card.Title titleStyle={{ fontSize: 15 }} title={bud.name} />
+                <Card.Content style={{}} >
+                  <Title style={{ fontSize: 15, margin: 0, padding: 0 }}>Rs.{bud.amount} Budget</Title>
+                  <Title style={{ fontSize: 15 }}>Rs.{bud.utilized} Utilized </Title>
+                </Card.Content>
+                <Card.Actions>
+                  <Button
+                    style={{ 
+                    }}
+                    onPress={() => {
+                      setPos(index);
+                      toggleModal();
+                    }}
+                  >
+                    Change Budget
+                  </Button>
+                </Card.Actions>
+              </Card>
+            );
+          })}
+        </View>
+
       </ScrollView>
       <Modal isVisible={isModalVisible}>
         <View
@@ -194,6 +202,10 @@ const Budget = () => {
 };
 export default Budget;
 const styles = StyleSheet.create({
+  cardContainer: {
+    width: Dimensions.get('window').width,
+    flex: 1, flexDirection: 'row', flexWrap: 'wrap'
+  },
   marginUpDown: {
     marginTop: 20,
     marginBottom: 20,
