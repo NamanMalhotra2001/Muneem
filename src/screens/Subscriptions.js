@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Button, Title } from "react-native-paper";
 import { GlobalStyles } from "../constants/styles";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, FlatList, Text, Dimensions } from "react-native";
+import SubscriptionItem from "../components/SubscriptionPage/SubscriptionItem";
+
 const Subscriptions = () => {
+  const {width,height} = Dimensions.get('window');
   const [subData, setSubData] = useState([
     {
       id: 1,
@@ -30,6 +33,9 @@ const Subscriptions = () => {
     },
   ]);
 
+  function renderSubscriptionItem(subData) {
+    return <SubscriptionItem {...subData.item}></SubscriptionItem>
+  }
   const data = [
     {
       name: "Netflix",
@@ -65,53 +71,12 @@ const Subscriptions = () => {
   ];
 
   return (
-    <View style={{ backgroundColor: GlobalStyles.colors.lightAccent }}>
-      <ScrollView>
-        {subData.length > 0 ? (
-          subData.map((sub, index) => {
-            return (
-              <Card
-                style={{
-                  margin: 10,
-                }}
-                key={sub.id}
-              >
-                <Card.Cover source={{ uri: sub.logo }} />
-                <Card.Title titleStyle={{ fontSize: 27 }} title={sub.name} />
-                <Card.Content>
-                  <Title>
-                    Rs.{sub.amount}/{sub.duration}
-                  </Title>
-                </Card.Content>
-                <Card.Actions>
-                  <Button
-                    onPress={() => {
-                      var arr = [...subData];
-                      arr.splice(index, 1);
-                      setSubData(arr);
-                      console.log(arr, subData);
-                    }}
-                  >
-                    Remove Subscription
-                  </Button>
-                </Card.Actions>
-              </Card>
-            );
-          })
-        ) : (
-          <Card
-            style={{
-              backgroundColor: GlobalStyles.colors.accent,
-              margin: 10,
-            }}
-          >
-            <Card.Title
-              titleStyle={{ fontSize: 27 }}
-              title="No Subscriptions"
-            />
-          </Card>
-        )}
-      </ScrollView>
+    <View style={{ backgroundColor: GlobalStyles.colors.lightAccent,height : '100%' }}>
+      <FlatList
+        data={subData}
+        renderItem={renderSubscriptionItem}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 };
