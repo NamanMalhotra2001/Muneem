@@ -6,14 +6,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { GlobalStyles } from '../../constants/styles';
 import { getMonth } from '../../util/date';
+import { fetchAll } from '../../util/http';
 import IconButton from '../UI/IconButton';
 
 const HomeHeader = ({ expenses }) => {
-	// console.log('homeheader11\n', expenses);
 	const navigation = useNavigation();
-
-	// useEffect(() => {}, [expenses]);
-
 	const [amounts, setAmounts] = useState({
 		spent: 5400.32,
 		budget: 10000.0,
@@ -21,6 +18,19 @@ const HomeHeader = ({ expenses }) => {
 	const percentage = (amounts.spent / amounts.budget) * 100;
 	const [color, setColor] = useState('#ffffffff');
 	const [secColor, setSecColor] = useState('#ffffffff');
+
+	useEffect(() => {
+		const monthExpenses = expenses.filter((e) => {
+			return e.date.getMonth() === new Date().getMonth();
+		});
+
+		const expensesSum = monthExpenses.reduce((sum, expense) => {
+			return sum + expense.amount;
+		}, 0);
+
+		const budget = fetchAll().then();
+		console.log(budget);
+	}, [expenses]);
 
 	return (
 		<View style={styles.container}>
