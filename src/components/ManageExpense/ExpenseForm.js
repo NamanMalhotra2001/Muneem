@@ -62,7 +62,7 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 	const toggleExpense = () => {
 		setInputs((prev) => ({
 			...prev,
-			isExpense: { value: !prev.isExpense, isValid: true },
+			isExpense: { value: !prev.isExpense.value, isValid: true },
 		}));
 	};
 

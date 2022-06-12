@@ -1,4 +1,4 @@
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
 
 import { GlobalStyles } from '../../constants/styles';
 
@@ -6,6 +6,7 @@ function LoadingOverlay() {
 	return (
 		<View style={styles.container}>
 			<ActivityIndicator size='large' color={GlobalStyles.colors.primary} />
+			<Text>Fetching your expenses! 💸</Text>
 		</View>
 	);
 }

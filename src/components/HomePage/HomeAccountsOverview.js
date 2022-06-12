@@ -5,7 +5,6 @@ import { fetchAll } from '../../util/http';
 import AccountItem from './AccountItem';
 
 const HomeAccountsOverview = ({ expenses }) => {
-	// console.log('homeaccounts5\n', expenses);
 	const [accounts, setAccounts] = useState();
 	const [spent, setSpent] = useState({
 		hdfc: 0,
@@ -15,7 +14,7 @@ const HomeAccountsOverview = ({ expenses }) => {
 	});
 
 	useEffect(() => {
-		async function getExpenses() {
+		async function getAccounts() {
 			try {
 				const all = await fetchAll();
 				setAccounts(all.accounts);
@@ -31,12 +30,16 @@ const HomeAccountsOverview = ({ expenses }) => {
 			cash: calculateSpent('cash'),
 		});
 
-		getExpenses();
-	}, []);
+		getAccounts();
+	}, [expenses]);
 
 	const calculateSpent = (account) => {
 		const monthExpenses = expenses.filter((e) => {
-			return e.date.getMonth() === new Date().getMonth() && e.account === account;
+			return (
+				e.date.getMonth() === new Date().getMonth() &&
+				e.account === account &&
+				e.isExpense
+			);
 		});
 
 		const expensesSum = monthExpenses.reduce((sum, expense) => {
