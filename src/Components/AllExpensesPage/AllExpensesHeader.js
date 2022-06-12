@@ -84,16 +84,12 @@ const AllExpensesHeader = ({ applyFilterForMonth }) => {
 						showProgressValue={false}
 						activeStrokeColor={color}
 						inActiveStrokeColor={secColor}
-						activeStrokeWidth={8}
-						inActiveStrokeWidth={5}
+						activeStrokeWidth={6}
+						inActiveStrokeWidth={3}
 						inActiveStrokeOpacity={0.4}
 					/>
 
 					<View style={styles.infoContainer}>
-						{/* // ########## month text ########## */}
-
-						{/* // ########## spent text ########## */}
-
 						<View style={styles.spentAmountContainer}>
 							<Text
 								style={{
@@ -127,6 +123,7 @@ const AllExpensesHeader = ({ applyFilterForMonth }) => {
 						</Text>
 					</View>
 				</View>
+
 				<View style={styles.stat}>
 					<View>
 						<Text style={styles.smallHeader}>Total Spent</Text>
@@ -153,6 +150,7 @@ const AllExpensesHeader = ({ applyFilterForMonth }) => {
 						</Text>
 					</View>
 				</View>
+
 				<View style={styles.stat}>
 					<View style={styles.dividedHorizontal}>
 						<Text style={styles.smallHeader}>Total Income</Text>

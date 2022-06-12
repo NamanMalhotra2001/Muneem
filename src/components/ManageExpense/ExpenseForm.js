@@ -41,11 +41,6 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 		},
 	});
 
-	console.log(inputs);
-
-	const formIsInvalid =
-		!inputs.amount.isValid || !inputs.date.isValid || !inputs.description.isValid;
-
 	// ########## handler functions ##########
 	function inputChangedHandler(inputIdentifier, enteredValue) {
 		setInputs((curInputValues) => {
@@ -57,7 +52,6 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 	}
 
 	function submitHandler() {
-		console.log(inputs);
 		const expenseData = {
 			title: inputs.title.value,
 			amount: +(+inputs.amount.value).toFixed(2),
@@ -74,7 +68,15 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 			expenseData.date.toString() !== '';
 		const descriptionIsValid = expenseData.description.trim().length > 0;
 
-		if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
+		const formIsInvalid =
+			!inputs.title.isValid ||
+			!inputs.amount.isValid ||
+			!inputs.date.isValid ||
+			!inputs.category.isValid ||
+			!inputs.account.isValid ||
+			!inputs.isExpense.isValid;
+
+		if (formIsInvalid) {
 			Alert.alert('Invalid input', 'Please check your input values');
 			setInputs((curInputs) => {
 				return {

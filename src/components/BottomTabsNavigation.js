@@ -21,13 +21,16 @@ export default function BottomTabsNavigation() {
 				headerTintColor: GlobalStyles.colors.highlight,
 				tabBarShowLabel: false,
 				tabBarStyle: {
-					height: 60,
+					height: 70,
+					paddingHorizontal: 135,
+					paddingTop: 5,
+					paddingBottom: 5,
 				},
 				tabBarItemStyle: {
-					borderTopLeftRadius: 20,
-					borderTopRightRadius: 20,
+					borderRadius: 100,
 				},
-				tabBarActiveTintColor: GlobalStyles.colors.highlight,
+				tabBarActiveTintColor: GlobalStyles.colors.primaryDark,
+				tabBarActiveBackgroundColor: GlobalStyles.colors.lightAccent,
 				headerRight: ({ tintColor }) => (
 					<IconButton
 						icon='add'
@@ -77,27 +80,6 @@ export default function BottomTabsNavigation() {
 					),
 				}}
 			/>
-			{/* <Tab.Screen
-				listeners={{
-					tabPress: (e) => {
-						// e.preventDefault();
-						setBottomTabIndex(1);
-					},
-				}}
-				name='AllExpenses'
-				component={AllExpenses}
-				options={{
-					title: 'All Expenses',
-					tabBarLabel: 'All',
-					tabBarIcon: ({ color, size, focused }) => (
-						<Ionicons
-							name={focused ? 'calendar' : 'calendar-outline'}
-							size={size}
-							color={color}
-						/>
-					),
-				}}
-			/> */}
 			<Tab.Screen
 				listeners={{
 					tabPress: (e) => {
@@ -113,27 +95,6 @@ export default function BottomTabsNavigation() {
 					tabBarIcon: ({ color, size, focused }) => (
 						<Ionicons
 							name={focused ? 'library' : 'library-outline'}
-							size={size}
-							color={color}
-						/>
-					),
-				}}
-			/>
-			<Tab.Screen
-				listeners={{
-					tabPress: (e) => {
-						// e.preventDefault();
-						setBottomTabIndex(3);
-					},
-				}}
-				name='Budget'
-				component={Budget}
-				options={{
-					title: 'Budget',
-					tabBarLabel: 'All',
-					tabBarIcon: ({ color, size, focused }) => (
-						<FontAwesome5
-							name={focused ? 'money-bill' : 'money-bill-alt'}
 							size={size}
 							color={color}
 						/>

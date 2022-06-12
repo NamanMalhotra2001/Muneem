@@ -23,6 +23,7 @@ const Home = ({ navigation }) => {
 
 		return expense.date >= date7DaysAgo && expense.date <= today;
 	});
+	// console.log(recentExpenses);
 
 	useEffect(() => {
 		async function getExpenses() {

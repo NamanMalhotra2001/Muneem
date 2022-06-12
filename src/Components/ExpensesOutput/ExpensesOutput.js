@@ -11,71 +11,54 @@ const ExpensesOutput = ({ expenses, expensesPeriod, fallbackText, button, home }
 
 	return (
 		<>
-			{expenses.length > 0 ? (
-				<View style={styles.container}>
-					<ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
-					{home ? (
-						<>
-							{expenses.slice(0, 5).map((item, k) => (
-								<ExpenseItem {...item} key={k} />
-							))}
-						</>
-					) : (
-						<ExpensesList expenses={expenses} />
-					)}
-				</View>
-			) : (
-				<View style={styles.container}>
-					<ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
-					<View style={styles.noContainer}>
-						<Text style={styles.text}>{fallbackText}</Text>
+			<View style={styles.container}>
+				<ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
+				{button ? (
+					<View style={styles.buttonsContainer}>
+						<IconButton
+							onPress={() => {
+								navigation.navigate('ManageExpense');
+							}}
+							icon='add'
+							size={24}
+							color='gray'
+							style={styles.button}
+						/>
+						<IconButton
+							onPress={() => {
+								navigation.navigate('AllExpenses', {
+									currentPage: 0,
+								});
+							}}
+							icon='ios-arrow-redo-outline'
+							size={24}
+							color='gray'
+							style={styles.button}
+						/>
 					</View>
-				</View>
-			)}
-			{button ? (
-				<View style={styles.buttonsContainer}>
-					<IconButton
-						onPress={() => {
-							navigation.navigate('ManageExpense');
-						}}
-						icon='add'
-						size={24}
-						color='gray'
-						style={{
-							borderRadius: 30,
-							backgroundColor: 'white',
-							width: 60,
-							alignItems: 'center',
-							justifyContent: 'center',
-							elevation: 3,
-							shadowOffset: { height: 1, width: 0 },
-							shadowRadius: 4,
-							shadowOpacity: 0.2,
-						}}
-					/>
-					<IconButton
-						onPress={() => {
-							navigation.navigate('AllExpenses', { currentPage: 0 });
-						}}
-						icon='ios-arrow-redo-outline'
-						size={24}
-						color='gray'
-						style={{
-							borderRadius: 30,
-							backgroundColor: 'white',
-							width: 60,
-							alignItems: 'center',
-							justifyContent: 'center',
-							elevation: 3,
-							shadowOffset: { height: 1, width: 0 },
-							shadowRadius: 4,
-							shadowOpacity: 0.2,
-						}}
-					/>
-				</View>
-			) : (
-				<></>
-			)}
+				) : (
+					<></>
+				)}
+				{expenses.length > 0 ? (
+					<>
+						{home ? (
+							<>
+								{expenses.map((transaction, k) => (
+									<ExpenseItem {...transaction} key={k} />
+								))}
+							</>
+						) : (
+							<ExpensesList expenses={expenses} />
+						)}
+					</>
+				) : (
+					<>
+						<View style={styles.noContainer}>
+							<Text style={styles.text}>{fallbackText}</Text>
+						</View>
+					</>
+				)}
+			</View>
 		</>
 	);
 };
@@ -83,15 +66,11 @@ const ExpensesOutput = ({ expenses, expensesPeriod, fallbackText, button, home }
 export default ExpensesOutput;
 
 const styles = StyleSheet.create({
-	buttonsContainer: {
-		backgroundColor: GlobalStyles.colors.lightAccent,
-		flexDirection: 'row',
-		justifyContent: 'flex-end',
-	},
 	container: {
 		flex: 1,
-		paddingBottom: 0,
+		paddingBottom: 10,
 		backgroundColor: GlobalStyles.colors.lightAccent,
+		minHeight: 300,
 	},
 	noContainer: {
 		flex: 1,
@@ -100,10 +79,29 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
+	buttonsContainer: {
+		backgroundColor: GlobalStyles.colors.lightAccent,
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+		marginBottom: 5,
+		marginRight: 15,
+		marginTop: -12,
+	},
 	text: {
 		color: GlobalStyles.colors.highlight,
 		fontSize: 16,
 		maxWidth: '70%',
 		textAlign: 'center',
+	},
+	button: {
+		borderRadius: 30,
+		backgroundColor: 'white',
+		width: 60,
+		alignItems: 'center',
+		justifyContent: 'center',
+		elevation: 3,
+		shadowOffset: { height: 1, width: 0 },
+		shadowRadius: 4,
+		shadowOpacity: 0.2,
 	},
 });
