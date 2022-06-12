@@ -67,8 +67,6 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		justifyContent: 'space-between',
 		borderRadius: 10,
-		elevation: 5,
-
 	},
 	textBase: {
 		color: 'black',

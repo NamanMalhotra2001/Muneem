@@ -23,11 +23,22 @@ const AllExpenses = ({ route }) => {
 		changeSubPage(currentPage === 0 ? 0 : width);
 	}, []);
 
+	const getTotalSpent = (expenses) => {
+		return expenses.reduce((sum, expense) => {
+			return sum + expense.amount;
+		}, 0);
+		 
+	};
+
 	const applyFilterForMonth = (month) => {
 		// console.log(month);
+
 		setCurrentExpenses((old) =>
 			expensesCtx.expenses.filter((expense) => expense.date.getMonth() === month)
 		);
+		
+		
+
 	};
 
 	const setSliderPage = (event) => {
@@ -50,7 +61,7 @@ const AllExpenses = ({ route }) => {
 	};
 	return (
 		<NativeBaseProvider>
-			<AllExpensesHeader applyFilterForMonth={applyFilterForMonth}>
+			<AllExpensesHeader spentAmount={getTotalSpent(currentExpenses)} applyFilterForMonth={applyFilterForMonth}>
 				{' '}
 			</AllExpensesHeader>
 			<View style={_styles.subTabs}>

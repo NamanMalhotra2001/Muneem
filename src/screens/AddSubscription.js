@@ -49,7 +49,7 @@ const AddSubscription = ({ route, navigation }) => {
 
 
     console.log("New Subscription Data", {
-      id : formData.id,
+      id: formData.id,
       subName: inputs.name.value,
       duration: inputs.duration.value,
       date: inputs.date.value,
@@ -82,39 +82,42 @@ const AddSubscription = ({ route, navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: GlobalStyles.colors.lightAccent }}>
+      {!isEditing ?
+        <View
+          style={{
+            height: 64,
+            marginTop : "3%",
+            marginHorizontal: "5%",
+            zIndex : 3,
+          }}
+        >
+
+          <DropdownMenu
+            bgColor={"white"}
+            handler={(selection, row) =>
+              setInputs(() => {
+                return {
+                  ...inputs,
+                  name: { value: subNames[0][row], isValid: true },
+                };
+              })
+            }
+            data={subNames}
+          />
+
+        </View>
+        : <></>}
       <View
         style={{
           height: 64,
-          zIndex: 21,
-          position: "relative",
-          marginTop: "5%",
+          marginTop : "3%",
           marginHorizontal: "5%",
+          borderRadius: 10,
+          zIndex : 2
         }}
       >
-
-        {!isEditing ? <DropdownMenu
-          bgColor={"white"}
-          handler={(selection, row) =>
-            setInputs(() => {
-              return {
-                ...inputs,
-                name: { value: subNames[0][row], isValid: true },
-              };
-            })
-          }
-          data={subNames}
-        /> : <></>}
-
-      </View>
-      <View
-        style={{
-          height: 64,
-          zIndex: 20,
-          position: "relative",
-          marginHorizontal: "5%",
-        }}
-      >
-        <DropdownMenu
+        <DropdownMenu 
+          
           bgColor={"white"}
           handler={(selection, row) =>
             setInputs(() => {
@@ -127,7 +130,11 @@ const AddSubscription = ({ route, navigation }) => {
           data={duration}
         />
       </View>
-      <View style={styles.container}>
+      <View style={{
+        zIndex: 1,
+        marginHorizontal: "5%",
+        marginTop : "4%",
+      }}>
         <Input
           label={inputs.amount !== "" && GlobalStyles.symbols.rupee}
           textInputConfig={{

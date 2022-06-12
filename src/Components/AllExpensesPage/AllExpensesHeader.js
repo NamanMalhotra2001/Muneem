@@ -8,7 +8,7 @@ import { GlobalStyles } from '../../constants/styles';
 import { getMonth } from '../../util/date';
 import IconButton from '../UI/IconButton';
 
-const AllExpensesHeader = ({ applyFilterForMonth }) => {
+const AllExpensesHeader = ({ applyFilterForMonth,spentAmount }) => {
 	const navigation = useNavigation();
 	const [dummy, setDummy] = useState({
 		spent: 7650.0,
@@ -145,34 +145,7 @@ const AllExpensesHeader = ({ applyFilterForMonth }) => {
 									fontWeight: 'bold',
 								}}
 							>
-								{dummy.spent.toFixed(2)}
-							</Text>
-						</Text>
-					</View>
-				</View>
-
-				<View style={styles.stat}>
-					<View style={styles.dividedHorizontal}>
-						<Text style={styles.smallHeader}>Total Income</Text>
-						<Text style={styles.Value}>
-							<Text
-								style={{
-									color: 'white',
-									fontSize: 12,
-									marginTop: 2,
-									marginRight: 5,
-								}}
-							>
-								{GlobalStyles.symbols.rupee}
-							</Text>
-							<Text
-								style={{
-									fontSize: 16,
-									color: 'white',
-									fontWeight: 'bold',
-								}}
-							>
-								{25000}
+								{spentAmount.toFixed(2)}
 							</Text>
 						</Text>
 					</View>
