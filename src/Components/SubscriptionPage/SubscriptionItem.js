@@ -4,17 +4,17 @@ import { Pressable, StyleSheet, Text, View, Image } from 'react-native';
 import { GlobalStyles } from '../../constants/styles';
 import { getFormattedDate } from '../../util/date';
 
-const SubscriptionItem = ({ id, amount, name, logo }) => {
+const SubscriptionItem = ({ id, amount, name, logo, duration }) => {
 	const navigation = useNavigation();
 	console.log(name);
-	function expensePressHandler() {
-		navigation.navigate('ManageExpense', { expenseId: id });
+	function subscriptionPressHandler() {
+		navigation.navigate('AddSubscription', { isEditing: true, formData: { id: id, amount: amount, name: name, duration : duration} });
 	}
 
 	return (
 		<NativeBaseProvider>
 			<Pressable
-				onPress={expensePressHandler}
+				onPress={subscriptionPressHandler}
 				style={({ pressed }) => pressed && styles.pressed}
 			>
 				<View style={styles.expenseItem}>
@@ -41,7 +41,11 @@ export default SubscriptionItem;
 
 const styles = StyleSheet.create({
 	stat: {
-		justifyContent: 'center',
+		width: '100%',
+		marginLeft: 15,
+		marginTop: 3,
+		flexDirection: 'column',
+		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
 	},
 	pressed: {
@@ -52,7 +56,7 @@ const styles = StyleSheet.create({
 		height: 55,
 		resizeMode: 'stretch',
 		borderRadius: 8,
-		marginTop: 2,
+		marginTop: 3,
 	},
 	expenseItem: {
 		marginHorizontal: 20,
@@ -60,9 +64,11 @@ const styles = StyleSheet.create({
 		padding: 5,
 		flexDirection: 'row',
 		height: 70,
-		backgroundColor: GlobalStyles.colors.accent,
+		backgroundColor: 'white',
 		justifyContent: 'space-between',
 		borderRadius: 10,
+		elevation: 5,
+
 	},
 	textBase: {
 		color: 'black',

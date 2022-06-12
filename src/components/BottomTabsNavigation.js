@@ -45,7 +45,7 @@ export default function BottomTabsNavigation() {
 									navigation.navigate('ManageExpense');
 									break;
 								case 2:
-									navigation.navigate('AddSubscription');
+									navigation.navigate('AddSubscription', { isEditing: false, formData: { id: null, amount: 0, name: "", duration : null} });
 									break;
 								case 3:
 									navigation.navigate('ManageExpense');

@@ -1,24 +1,25 @@
 import { StyleSheet, View } from "react-native";
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { GlobalStyles } from "../constants/styles";
 import Input from "../components/ManageExpense/Input";
 import DropdownMenu from "react-native-dropdown-menu";
 import Button from "../components/UI/Button";
 
-const AddSubscription = ({ navigation }) => {
+const AddSubscription = ({ route, navigation }) => {
   const subNames = [
     ["Netflix", "Amazon Prime", "Disney+Hotstar", "Zee5", "Youtube Premium"],
   ];
   const duration = [["Monthly", "Yearly"]];
+  const { isEditing, formData } = route.params;
   const [output, setOutput] = useState({
-    subName: "Netflix",
-    duration: "Monthly",
-    amount: "1000",
-    date: "06/01/22",
+    subName: "",
+    duration: "",
+    amount: "",
+    date: "",
   });
   const [inputs, setInputs] = useState({
     amount: {
-      value: "",
+      value: 0,
       isValid: true,
     },
     date: {
@@ -45,18 +46,40 @@ const AddSubscription = ({ navigation }) => {
   }
 
   function submitHandler() {
-    setOutput(() => {
-      return {
-        ...output,
-        subName: inputs.name.value,
-        duration: inputs.duration.value,
-        date: inputs.date.value,
-        amount: inputs.amount.value,
-      };
+
+
+    console.log("New Subscription Data", {
+      id : formData.id,
+      subName: inputs.name.value,
+      duration: inputs.duration.value,
+      date: inputs.date.value,
+      amount: inputs.amount.value,
     });
     navigation.goBack();
-    console.log("New Subscription Data", output);
+
+
   }
+  useEffect(() => {
+    if (isEditing) {
+      Object.keys(formData).map((key) => {
+        setInputs((curInputValues) => {
+          console.log(key, formData[key])
+          return {
+            ...curInputValues,
+            [key]: { value: formData[key], isValid: true },
+            date: { value: new Date().toLocaleDateString("en-GB"), isValid: true },
+          };
+        });
+      })
+
+    }
+  }, []);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: isEditing ? 'Edit Subscription' : 'Add Subscription',
+    });
+  }, []);
+
   return (
     <View style={{ flex: 1, backgroundColor: GlobalStyles.colors.lightAccent }}>
       <View
@@ -68,7 +91,8 @@ const AddSubscription = ({ navigation }) => {
           marginHorizontal: "5%",
         }}
       >
-        <DropdownMenu
+
+        {!isEditing ? <DropdownMenu
           bgColor={"white"}
           handler={(selection, row) =>
             setInputs(() => {
@@ -79,7 +103,8 @@ const AddSubscription = ({ navigation }) => {
             })
           }
           data={subNames}
-        />
+        /> : <></>}
+
       </View>
       <View
         style={{
@@ -109,7 +134,8 @@ const AddSubscription = ({ navigation }) => {
             placeholder: "Enter subscription amount",
             keyboardType: "decimal-pad",
             onChangeText: inputChangedHandler.bind(this, "amount"),
-            value: inputs.amount.value,
+            value: (inputs.amount.value).toString(),
+            defaultValue: (inputs.amount.value).toString(),
           }}
           valid={inputs.amount.isValid}
         />
@@ -126,7 +152,7 @@ const AddSubscription = ({ navigation }) => {
             Cancel
           </Button>
           <Button style={styles.button} onPress={submitHandler}>
-            {"Add"}
+            {isEditing ? "Edit" : "Add"}
           </Button>
         </View>
       </View>
