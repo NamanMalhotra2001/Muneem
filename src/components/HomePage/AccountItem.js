@@ -15,6 +15,7 @@ const AccountItem = ({ name, pic, spent, balance }) => {
 					style={{
 						flexDirection: 'row',
 						alignItems: 'center',
+						padding: 8,
 					}}
 				>
 					<Text style={styles.textSmall}>spent: </Text>
@@ -22,7 +23,7 @@ const AccountItem = ({ name, pic, spent, balance }) => {
 						{GlobalStyles.symbols.rupee} {spent}
 					</Text>
 				</View>
-				{balance && (
+				{balance ? (
 					<View
 						style={{
 							flexDirection: 'row',
@@ -30,6 +31,7 @@ const AccountItem = ({ name, pic, spent, balance }) => {
 							width: 150,
 							alignItems: 'center',
 							justifyContent: 'center',
+							padding: 8,
 						}}
 					>
 						<Text style={styles.textSmall}>balance: </Text>
@@ -37,6 +39,8 @@ const AccountItem = ({ name, pic, spent, balance }) => {
 							{GlobalStyles.symbols.rupee} {balance}
 						</Text>
 					</View>
+				) : (
+					<></>
 				)}
 			</View>
 			{/* <View>

@@ -43,6 +43,10 @@ export function updateExpense(id, expenseData) {
 	return axios.put(BACKEND_URL + `/user1/transactions/${id}.json`, expenseData);
 }
 
+export function updateAccountBalance(name, obj) {
+	return axios.put(BACKEND_URL + `/user1/accounts/${name}.json`, obj);
+}
+
 export function updateBudget(name, obj) {
 	return axios.put(BACKEND_URL + `/user1/categories/${name}.json`, obj);
 }
