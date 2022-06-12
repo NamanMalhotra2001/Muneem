@@ -117,6 +117,7 @@ const HomeHeader = () => {
 						alignSelf: 'flex-end',
 						// backgroundColor: '#5e5e5e8a',
 					}}
+					onPress={() => navigation.navigate('UserProfile')}
 				/>
 
 				{/* // ########## chart button ########## */}

@@ -1,14 +1,23 @@
 import { useState } from 'react';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { GlobalStyles } from '../../constants/styles';
 import { getFormattedDateTime } from '../../util/date';
 import Button from '../UI/Button';
 import IconButton from '../UI/IconButton';
 import Input from './Input';
+import { Feather } from '@expo/vector-icons';
+import { NativeBaseProvider, Select } from 'native-base';
+import DropdownMenu from 'react-native-dropdown-menu';
 
 function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues }) {
 	// ########## states ##########
+	const subNames = [
+		['Netflix', 'Amazon Prime', 'Disney+Hotstar', 'Zee5', 'Youtube Premium'],
+	];
+	// const [service, setService] = useState('');
+	const [isExpense, setIsExpense] = useState(false);
+	const toggleExpense = () => setIsExpense((previousState) => !previousState);
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 	const [inputs, setInputs] = useState({
 		title: {
@@ -76,7 +85,7 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 			!inputs.account.isValid ||
 			!inputs.isExpense.isValid;
 
-		if (formIsInvalid) {
+		if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
 			Alert.alert('Invalid input', 'Please check your input values');
 			setInputs((curInputs) => {
 				return {
@@ -89,9 +98,9 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 				};
 			});
 			return;
+		} else {
+			onSubmit(expenseData);
 		}
-
-		onSubmit(expenseData);
 	}
 
 	const showDatePicker = () => {
@@ -114,107 +123,169 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 
 	// ########## main start ##########
 	return (
-		<View style={styles.container}>
-			{/* // ########## title ########## */}
-			<Input
-				textInputConfig={{
-					maxLength: 20,
-					placeholder: 'Enter transaction title',
-					onChangeText: inputChangedHandler.bind(this, 'title'),
-					value: inputs.title.value,
-				}}
-				valid={inputs.title.isValid}
-			/>
+		<NativeBaseProvider>
+			<View style={styles.container}>
+				{/* // ########## title ########## */}
+				<Input
+					textInputConfig={{
+						maxLength: 20,
+						placeholder: 'Enter transaction title',
+						onChangeText: inputChangedHandler.bind(this, 'title'),
+						value: inputs.title.value,
+					}}
+					valid={inputs.title.isValid}
+				/>
 
-			{/* // ########## amount ########## */}
-			<Input
-				label={inputs.amount.value !== '' && GlobalStyles.symbols.rupee}
-				textInputConfig={{
-					placeholder: 'Enter transaction amount',
-					keyboardType: 'decimal-pad',
-					onChangeText: inputChangedHandler.bind(this, 'amount'),
-					value: inputs.amount.value,
-				}}
-				style={{
-					borderTopWidth: 0.5,
-				}}
-				valid={inputs.amount.isValid}
-			/>
+				{/* // ########## amount ########## */}
+				<Input
+					label={inputs.amount.value !== '' && GlobalStyles.symbols.rupee}
+					textInputConfig={{
+						placeholder: 'Enter transaction amount',
+						keyboardType: 'decimal-pad',
+						onChangeText: inputChangedHandler.bind(this, 'amount'),
+						value: inputs.amount.value,
+					}}
+					style={{
+						borderTopWidth: 0.5,
+					}}
+					valid={inputs.amount.isValid}
+				/>
 
-			{/* // ########## date picker button ########## */}
-			<Pressable
-				style={({ pressed }) => pressed && styles.pressed}
-				onPress={showDatePicker}
-			>
-				<View
-					style={[
-						styles.datePickerButton,
-						!inputs.date.isValid && styles.invalid,
-					]}
+				{/* // ########## date picker button ########## */}
+				<Pressable
+					style={({ pressed }) => pressed && styles.pressed}
+					onPress={showDatePicker}
 				>
-					<Text
-						style={{
-							color: GlobalStyles.colors.highlight,
-							fontSize: 18,
-							fontWeight: '400',
-						}}
+					<View
+						style={[
+							styles.datePickerButton,
+							!inputs.date.isValid && styles.invalid,
+						]}
 					>
-						{inputs.date.value !== ''
-							? getFormattedDateTime(inputs.date.value)
-							: 'Tap to select date'}
-					</Text>
-					<DateTimePickerModal
-						isVisible={isDatePickerVisible}
-						mode='datetime'
-						onConfirm={handleConfirm}
-						onCancel={hideDatePicker}
+						<Text style={styles.text}>
+							{inputs.date.value !== ''
+								? getFormattedDateTime(inputs.date.value)
+								: 'Tap to select date'}
+						</Text>
+						<DateTimePickerModal
+							isVisible={isDatePickerVisible}
+							mode='datetime'
+							onConfirm={handleConfirm}
+							onCancel={hideDatePicker}
+						/>
+					</View>
+				</Pressable>
+
+				{/* // ########## category ########## */}
+				<View>
+					{/* <Select
+						selectedValue={service}
+						minWidth='200'
+						accessibilityLabel='Choose Service'
+						placeholder='Choose Service'
+						_selectedItem={{
+							bg: 'teal.600',
+							// endIcon: <CheckIcon size='5' />,
+						}}
+						mt={1}
+						onValueChange={(itemValue) => setService(itemValue)}
+					>
+						<Select.Item label='UX Research' value='ux' />
+						<Select.Item label='Web Development' value='web' />
+						<Select.Item label='Cross Platform Development' value='cross' />
+						<Select.Item label='UI Designing' value='ui' />
+						<Select.Item label='Backend Development' value='backend' />
+					</Select> */}
+					<DropdownMenu
+						bgColor={'white'}
+						handler={(selection, row) =>
+							setInputs(() => {
+								return {
+									...inputs,
+									name: { value: subNames[0][row], isValid: true },
+								};
+							})
+						}
+						data={subNames}
 					/>
 				</View>
-			</Pressable>
 
-			{/* // ########## category ########## */}
+				{/* // ########## account ########## */}
+				<Text>account</Text>
 
-			{/* // ########## account ########## */}
+				{/* // ########## isExpense ########## */}
+				<View style={styles.isExpenseContainer}>
+					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+						<Feather
+							name={isExpense ? 'arrow-up-right' : 'arrow-down-left'}
+							size={20}
+							style={{
+								backgroundColor: isExpense
+									? GlobalStyles.colors.redAccent
+									: GlobalStyles.colors.accent,
+								borderRadius: 5,
+								padding: 5,
+							}}
+						/>
+						<Text style={[styles.text, { marginLeft: 10 }]}>
+							{isExpense ? 'Expense' : 'Income'}
+						</Text>
+					</View>
+					{/* <Text style={styles.text}>category</Text> */}
+					<Switch
+						trackColor={{
+							true: GlobalStyles.colors.lightRedAccent,
+							false: GlobalStyles.colors.primary,
+						}}
+						thumbColor={
+							isExpense
+								? GlobalStyles.colors.lightError
+								: GlobalStyles.colors.lightAccent
+						}
+						ios_backgroundColor='#3e3e3e'
+						onValueChange={toggleExpense}
+						value={isExpense}
+					/>
+				</View>
 
-			{/* // ########## isExpense ########## */}
+				{/* // ########## description ########## */}
+				<Input
+					textInputConfig={{
+						placeholder: 'Enter transaction details',
+						multiline: true,
+						onChangeText: inputChangedHandler.bind(this, 'description'),
+						value: inputs.description.value,
+					}}
+					style={{
+						borderTopWidth: 0.5,
+					}}
+					valid={inputs.description.isValid}
+				/>
 
-			{/* // ########## description ########## */}
-			<Input
-				textInputConfig={{
-					placeholder: 'Enter transaction details',
-					multiline: true,
-					onChangeText: inputChangedHandler.bind(this, 'description'),
-					value: inputs.description.value,
-				}}
-				style={{
-					borderTopWidth: 0.5,
-				}}
-				valid={inputs.description.isValid}
-			/>
-
-			{/* // ########## add/update - delete - cancel buttons ########## */}
-			<View style={{ position: 'absolute', bottom: 20, left: 0, right: 0 }}>
-				<View style={styles.buttonsContainer}>
-					<Button style={styles.button} mode='flat' onPress={onCancel}>
-						Cancel
-					</Button>
-					<Button style={styles.button} onPress={submitHandler}>
-						{isEditing ? 'Update' : 'Add'}
-					</Button>
-					{isEditing && (
-						<View>
-							<IconButton
-								style={styles.deleteButton}
-								icon='trash'
-								color={GlobalStyles.colors.error}
-								size={24}
-								onPress={onDelete}
-							/>
-						</View>
-					)}
+				{/* // ########## add/update - delete - cancel buttons ########## */}
+				<View style={{ position: 'absolute', bottom: 20, left: 0, right: 0 }}>
+					<View style={styles.buttonsContainer}>
+						<Button style={styles.button} mode='flat' onPress={onCancel}>
+							Cancel
+						</Button>
+						<Button style={styles.button} onPress={submitHandler}>
+							{isEditing ? 'Update' : 'Add'}
+						</Button>
+						{isEditing && (
+							<View>
+								<IconButton
+									style={styles.deleteButton}
+									icon='trash'
+									color={GlobalStyles.colors.error}
+									size={24}
+									onPress={onDelete}
+								/>
+							</View>
+						)}
+					</View>
 				</View>
 			</View>
-		</View>
+		</NativeBaseProvider>
 	);
 }
 
@@ -244,6 +315,20 @@ const styles = StyleSheet.create({
 		padding: 15,
 		backgroundColor: 'white',
 		borderTopWidth: 0.5,
+	},
+	isExpenseContainer: {
+		paddingHorizontal: 15,
+		paddingVertical: 3,
+		backgroundColor: 'white',
+		borderTopWidth: 0.5,
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		flexDirection: 'row',
+	},
+	text: {
+		color: GlobalStyles.colors.highlight,
+		fontSize: 18,
+		fontWeight: '400',
 	},
 	pressed: {
 		opacity: 0.75,

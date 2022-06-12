@@ -9,6 +9,7 @@ import Intro from './src/screens/Intro';
 import LogIn from './src/screens/LogIn';
 import ManageExpenses from './src/screens/ManageExpense';
 import SignUp from './src/screens/SignUp';
+import UserProfile from './src/screens/UserProfile';
 import ExpensesContextProvider from './src/store/expenses-context';
 
 const Stack = createNativeStackNavigator();
@@ -45,6 +46,11 @@ export default function App() {
 						<Stack.Screen
 							name='SignUp'
 							component={SignUp}
+							options={{ headerShown: false }}
+						/>
+						<Stack.Screen
+							name='UserProfile'
+							component={UserProfile}
 							options={{ headerShown: false }}
 						/>
 						<Stack.Screen
