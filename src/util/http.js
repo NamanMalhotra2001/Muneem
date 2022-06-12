@@ -4,14 +4,16 @@ const BACKEND_URL =
 	'https://muneem-3ed5f-default-rtdb.asia-southeast1.firebasedatabase.app';
 
 export async function storeExpense(expenseData) {
-	const response = await axios.post(BACKEND_URL + '/expenses.json', expenseData);
+	const response = await axios.post(
+		BACKEND_URL + '/user1/transactions.json',
+		expenseData
+	);
 	const id = response.data.name;
 	return id;
 }
 
 export async function fetchExpenses() {
-	const response = await axios.get(BACKEND_URL + '/expenses.json');
-
+	const response = await axios.get(BACKEND_URL + '/user1/transactions.json');
 	const expenses = [];
 
 	for (const key in response.data) {
@@ -32,9 +34,9 @@ export async function fetchExpenses() {
 }
 
 export function updateExpense(id, expenseData) {
-	return axios.put(BACKEND_URL + `/expenses/${id}.json`, expenseData);
+	return axios.put(BACKEND_URL + `/user1/transactions/${id}.json`, expenseData);
 }
 
 export function deleteExpense(id) {
-	return axios.delete(BACKEND_URL + `/expenses/${id}.json`);
+	return axios.delete(BACKEND_URL + `/user1/transactions/${id}.json`);
 }
