@@ -22,6 +22,7 @@ const HomeAccountsOverview = ({ expenses }) => {
 				setError();
 			}
 		}
+		getAccounts();
 
 		setSpent({
 			hdfc: calculateSpent('hdfc'),
@@ -30,7 +31,6 @@ const HomeAccountsOverview = ({ expenses }) => {
 			cash: calculateSpent('cash'),
 		});
 
-		getAccounts();
 	}, [expenses]);
 
 	const calculateSpent = (account) => {

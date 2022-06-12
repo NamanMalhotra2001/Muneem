@@ -41,7 +41,11 @@ export async function fetchAll() {
 
 export async function fetchAllBudget() {
 	const response = await axios.get(BACKEND_URL + '/user1/categories.json');
+	return response.data;
+}
 
+export async function fetchOthers() {
+	const response = await axios.get(BACKEND_URL + '/user1/others.json');
 	return response.data;
 }
 
@@ -55,6 +59,11 @@ export function updateAccountBalance(name, obj) {
 
 export function updateBudget(name, obj) {
 	return axios.put(BACKEND_URL + `/user1/categories/${name}.json`, obj);
+}
+
+export async function updateOthers(obj) {
+	const old = await fetchOthers();
+	return axios.put(BACKEND_URL + `/user1/others.json`, { ...old, ...obj });
 }
 
 export function deleteExpense(id) {

@@ -11,6 +11,7 @@ import IconButton from '../UI/IconButton';
 
 const HomeHeader = ({ expenses }) => {
 	const navigation = useNavigation();
+	const [others, setOthers] = useState();
 	const [amounts, setAmounts] = useState({
 		spent: 5400.32,
 		budget: 10000.0,
@@ -28,8 +29,12 @@ const HomeHeader = ({ expenses }) => {
 			return sum + expense.amount;
 		}, 0);
 
-		const budget = fetchAll().then();
-		console.log(budget);
+		fetchAll().then((res) => {
+			setAmounts({
+				spent: expensesSum,
+				budget: res.others.budget,
+			});
+		});
 	}, [expenses]);
 
 	return (
