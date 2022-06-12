@@ -1,5 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import CircularProgress from 'react-native-circular-progress-indicator';
@@ -7,14 +8,17 @@ import { GlobalStyles } from '../../constants/styles';
 import { getMonth } from '../../util/date';
 import IconButton from '../UI/IconButton';
 
-const HomeHeader = () => {
+const HomeHeader = ({ expenses }) => {
+	// console.log('homeheader11\n', expenses);
 	const navigation = useNavigation();
 
-	const [dummy, setDummy] = useState({
+	// useEffect(() => {}, [expenses]);
+
+	const [amounts, setAmounts] = useState({
 		spent: 5400.32,
 		budget: 10000.0,
 	});
-	const percentage = (dummy.spent / dummy.budget) * 100;
+	const percentage = (amounts.spent / amounts.budget) * 100;
 	const [color, setColor] = useState('#ffffffff');
 	const [secColor, setSecColor] = useState('#ffffffff');
 
@@ -25,7 +29,7 @@ const HomeHeader = () => {
 				{/* // ########## circle ########## */}
 				<CircularProgress
 					radius={85}
-					value={(dummy.spent / dummy.budget) * 100}
+					value={(amounts.spent / amounts.budget) * 100}
 					showProgressValue={false}
 					activeStrokeColor={color}
 					inActiveStrokeColor={secColor}
@@ -77,7 +81,7 @@ const HomeHeader = () => {
 								fontWeight: 'bold',
 							}}
 						>
-							{dummy.spent.toFixed(2)}
+							{amounts.spent.toFixed(2)}
 						</Text>
 					</View>
 
@@ -100,7 +104,7 @@ const HomeHeader = () => {
 								fontWeight: 'bold',
 							}}
 						>
-							{dummy.budget.toFixed(2)}
+							{amounts.budget.toFixed(2)}
 						</Text>
 					</View>
 				</View>

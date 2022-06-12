@@ -12,8 +12,6 @@ import DropdownMenu from 'react-native-dropdown-menu';
 
 function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues }) {
 	// ########## states ##########
-	const [isExpense, setIsExpense] = useState(false);
-	const toggleExpense = () => setIsExpense((previousState) => !previousState);
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 	const [inputs, setInputs] = useState({
 		title: {
@@ -29,15 +27,15 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 			isValid: true,
 		},
 		category: {
-			value: defaultValues ? defaultValues.category : 'cat',
+			value: defaultValues ? defaultValues.category : 'others',
 			isValid: true,
 		},
 		account: {
-			value: defaultValues ? defaultValues.account : '',
+			value: defaultValues ? defaultValues.account : 'hdfc',
 			isValid: true,
 		},
 		isExpense: {
-			value: defaultValues ? defaultValues.isExpense : '',
+			value: defaultValues ? defaultValues.isExpense : true,
 			isValid: true,
 		},
 		description: {
@@ -58,8 +56,16 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 			'transfer',
 		],
 	];
+	const accNames = [['hdfc', 'kotak', 'cash', 'paytm']];
 
 	// ########## handler functions ##########
+	const toggleExpense = () => {
+		setInputs((prev) => ({
+			...prev,
+			isExpense: { value: !prev.isExpense, isValid: true },
+		}));
+	};
+
 	function inputChangedHandler(inputIdentifier, enteredValue) {
 		setInputs((curInputValues) => {
 			return {
@@ -71,39 +77,29 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 
 	function submitHandler() {
 		const expenseData = {
-			title: inputs.title.value,
+			title: inputs.title.value.trim(),
 			amount: +(+inputs.amount.value).toFixed(2),
 			date: inputs.date.value,
 			category: inputs.category.value,
 			account: inputs.account.value,
 			isExpense: inputs.isExpense.value,
-			description: inputs.description.value,
+			description: inputs.description.value.trim(),
 		};
 
+		const titleIsValid = expenseData.title.trim().length > 0;
 		const amountIsValid = !isNaN(expenseData.amount) && expenseData.amount > 0;
 		const dateIsValid =
 			expenseData.date.toString() !== 'Invalid Date' &&
 			expenseData.date.toString() !== '';
-		const descriptionIsValid = expenseData.description.trim().length > 0;
 
-		const formIsInvalid =
-			!inputs.title.isValid ||
-			!inputs.amount.isValid ||
-			!inputs.date.isValid ||
-			!inputs.category.isValid ||
-			!inputs.account.isValid ||
-			!inputs.isExpense.isValid;
-
-		if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
+		if (!amountIsValid || !dateIsValid || !titleIsValid) {
 			Alert.alert('Invalid input', 'Please check your input values');
 			setInputs((curInputs) => {
 				return {
+					...curInputs,
+					title: { value: curInputs.title.value, isValid: titleIsValid },
 					amount: { value: curInputs.amount.value, isValid: amountIsValid },
 					date: { value: curInputs.date.value, isValid: dateIsValid },
-					description: {
-						value: curInputs.description.value,
-						isValid: descriptionIsValid,
-					},
 				};
 			});
 			return;
@@ -185,36 +181,65 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 			</Pressable>
 
 			{/* // ########## category ########## */}
-			<View>
-				<View
-					style={[styles.buttonsContainer, { zIndex: 1, borderTopWidth: 0.5 }]}
-				>
-					<DropdownMenu
-						bgColor={'white'}
-						handler={(selection, row) =>
-							setInputs(() => ({
-								...inputs,
-								category: { value: catNames[0][row], isValid: true },
-							}))
-						}
-						titleStyle={{}}
-						data={catNames}
-					/>
-					{console.log(inputs.category.value)}
-				</View>
+			<View
+				style={[
+					styles.buttonsContainer,
+					{
+						zIndex: 1,
+						borderTopWidth: 0.5,
+						backgroundColor: 'white',
+						paddingHorizontal: 15,
+					},
+				]}
+			>
+				<Text style={styles.text}>Category:</Text>
+				<DropdownMenu
+					bgColor={'white'}
+					handler={(selection, row) => {
+						setInputs(() => ({
+							...inputs,
+							category: { value: catNames[selection][row], isValid: true },
+						}));
+					}}
+					data={catNames}
+				/>
 			</View>
 
 			{/* // ########## account ########## */}
-			<Text>account</Text>
+			<View
+				style={[
+					styles.buttonsContainer,
+					{
+						zIndex: 1,
+						borderTopWidth: 0.5,
+						backgroundColor: 'white',
+						paddingHorizontal: 15,
+					},
+				]}
+			>
+				<Text style={styles.text}>Account:</Text>
+				<DropdownMenu
+					bgColor={'white'}
+					handler={(selection, row) => {
+						setInputs(() => ({
+							...inputs,
+							account: { value: accNames[selection][row], isValid: true },
+						}));
+					}}
+					data={accNames}
+				/>
+			</View>
 
 			{/* // ########## isExpense ########## */}
 			<View style={styles.isExpenseContainer}>
 				<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 					<Feather
-						name={isExpense ? 'arrow-up-right' : 'arrow-down-left'}
+						name={
+							inputs.isExpense.value ? 'arrow-up-right' : 'arrow-down-left'
+						}
 						size={20}
 						style={{
-							backgroundColor: isExpense
+							backgroundColor: inputs.isExpense.value
 								? GlobalStyles.colors.redAccent
 								: GlobalStyles.colors.accent,
 							borderRadius: 5,
@@ -222,7 +247,7 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 						}}
 					/>
 					<Text style={[styles.text, { marginLeft: 10 }]}>
-						{isExpense ? 'Expense' : 'Income'}
+						{inputs.isExpense.value ? 'Expense' : 'Income'}
 					</Text>
 				</View>
 				{/* <Text style={styles.text}>category</Text> */}
@@ -232,13 +257,13 @@ function ExpenseForm({ onCancel, onSubmit, isEditing, onDelete, defaultValues })
 						false: GlobalStyles.colors.primary,
 					}}
 					thumbColor={
-						isExpense
+						inputs.isExpense.value
 							? GlobalStyles.colors.lightError
 							: GlobalStyles.colors.lightAccent
 					}
 					ios_backgroundColor='#3e3e3e'
 					onValueChange={toggleExpense}
-					value={isExpense}
+					value={inputs.isExpense.value}
 				/>
 			</View>
 

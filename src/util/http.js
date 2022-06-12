@@ -33,8 +33,18 @@ export async function fetchExpenses() {
 	return expenses;
 }
 
+export async function fetchAll() {
+	const response = await axios.get(BACKEND_URL + '/user1.json');
+
+	return response.data;
+}
+
 export function updateExpense(id, expenseData) {
 	return axios.put(BACKEND_URL + `/user1/transactions/${id}.json`, expenseData);
+}
+
+export function updateBudget(name, obj) {
+	return axios.put(BACKEND_URL + `/user1/categories/${name}.json`, obj);
 }
 
 export function deleteExpense(id) {

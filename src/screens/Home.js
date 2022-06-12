@@ -54,7 +54,7 @@ const Home = ({ navigation }) => {
 
 	return (
 		<ScrollView style={{ backgroundColor: GlobalStyles.colors.lightAccent }}>
-			<HomeHeader />
+			<HomeHeader expenses={expensesCtx.expenses} />
 			<ExpensesOutput
 				expenses={recentExpenses}
 				expensesPeriod={'Past week'}
@@ -62,7 +62,7 @@ const Home = ({ navigation }) => {
 				button={true}
 				home={true}
 			/>
-			<HomeAccountsOverview expenses={recentExpenses} />
+			<HomeAccountsOverview expenses={expensesCtx.expenses} />
 		</ScrollView>
 	);
 };
