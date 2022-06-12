@@ -39,6 +39,12 @@ export async function fetchAll() {
 	return response.data;
 }
 
+export async function fetchAllBudget() {
+	const response = await axios.get(BACKEND_URL + '/user1/categories.json');
+
+	return response.data;
+}
+
 export function updateExpense(id, expenseData) {
 	return axios.put(BACKEND_URL + `/user1/transactions/${id}.json`, expenseData);
 }

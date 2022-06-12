@@ -20,7 +20,7 @@ const AllExpensesHeader = ({ applyFilterForMonth,spentAmount }) => {
 	};
 	const amountSpendablePerDay = () => {
 		return (
-			(dummy.budget - dummy.spent) /
+			(dummy.budget - spentAmount) /
 			(daysInThisMonth() - new Date().getDate())
 		).toFixed();
 	};
@@ -80,7 +80,7 @@ const AllExpensesHeader = ({ applyFilterForMonth,spentAmount }) => {
 					</Text>
 					<CircularProgress
 						radius={45}
-						value={(dummy.spent / dummy.budget) * 100}
+						value={(spentAmount / dummy.budget) * 100}
 						showProgressValue={false}
 						activeStrokeColor={color}
 						inActiveStrokeColor={secColor}

@@ -36,7 +36,7 @@ const AllExpenses = ({ route }) => {
 		setCurrentExpenses((old) =>
 			expensesCtx.expenses.filter((expense) => expense.date.getMonth() === month)
 		);
-		
+		console.log(expensesCtx.expenses);
 		
 
 	};
@@ -103,7 +103,7 @@ const AllExpenses = ({ route }) => {
 					/>
 				</View>
 				<ScrollView>
-					<Budget />
+					<Budget expenses={currentExpenses} />
 				</ScrollView>
 			</ScrollView>
 		</NativeBaseProvider>

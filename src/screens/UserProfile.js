@@ -16,7 +16,7 @@ const UserProfile = () => {
 		
 		<NativeBaseProvider>
 		<View style={{padding:20,width:'100%',backgroundColor:'#00f397',height:120,alignItems:'center'}}>
-			    <Image source={require('../../assets/blank-profile-picture-973460_640.png')} style={{width:140,height:140,borderRadius:100,marginTop:10}}></Image>
+			    {/* <Image source={require('../../assets/blank-profile-picture-973460_640.png')} style={{width:140,height:140,borderRadius:100,marginTop:10}}></Image> */}
 
 
 			</View>

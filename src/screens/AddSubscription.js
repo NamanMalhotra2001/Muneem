@@ -4,6 +4,7 @@ import { GlobalStyles } from "../constants/styles";
 import Input from "../components/ManageExpense/Input";
 import DropdownMenu from "react-native-dropdown-menu";
 import Button from "../components/UI/Button";
+import IconButton from "../components/UI/IconButton";
 
 const AddSubscription = ({ route, navigation }) => {
   const subNames = [
@@ -17,6 +18,10 @@ const AddSubscription = ({ route, navigation }) => {
     amount: "",
     date: "",
   });
+  const onDelete = () =>
+  {
+    console.log('called delete');
+  }
   const [inputs, setInputs] = useState({
     amount: {
       value: 0,
@@ -161,6 +166,17 @@ const AddSubscription = ({ route, navigation }) => {
           <Button style={styles.button} onPress={submitHandler}>
             {isEditing ? "Edit" : "Add"}
           </Button>
+          {isEditing && (
+						<View>
+							<IconButton 
+								style={styles.deleteButton}
+								icon='trash'
+								color={GlobalStyles.colors.error}
+								size={24}
+								onPress={onDelete}
+							/>
+						</View>
+					)}
         </View>
       </View>
     </View>

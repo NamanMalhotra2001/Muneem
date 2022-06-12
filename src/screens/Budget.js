@@ -1,95 +1,150 @@
 import { Box } from "@react-native-material/core";
 import { View, StyleSheet, ScrollView, Dimensions } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GlobalStyles } from "../constants/styles";
 import { PieChart } from "react-native-chart-kit";
 import { TextInput, Card, Button, Title } from "react-native-paper";
 import Modal from "react-native-modal";
+import { exp } from "react-native-reanimated";
+import { fetchAllBudget, updateBudget } from "../util/http";
 
-const Budget = () => {
+const Budget = ({ expenses }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const width = Dimensions.get('window').width;
   const height = Dimensions.get('window').height;
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  const [budgetAmount, setBudgetAmount] = useState("10000");
+  const [reRender,setReRender] = useState(false);
+  const [editBudgetForm, setEditBudgetForm] = useState({
+    name: "",
+    amount: "",
+  });
+  const [budgetCategories, setBudgetAmount] = useState({});
   const [pos, setPos] = useState(0);
-
+  const images = [
+    {
+      name: "health",
+      logo: require('../../assets/categories/health.png')
+    },
+    {
+      name: "food",
+      logo: require('../../assets/categories/food.png')
+    },
+    {
+      name: "shopping",
+      logo: require('../../assets/categories/shopping.png')
+    },
+    {
+      name: "groceries",
+      logo: require('../../assets/categories/groceries.png')
+    },
+    {
+      name: "bills",
+      logo: require('../../assets/categories/bills.png')
+    },
+    {
+      name: "entertainment",
+      logo: require('../../assets/categories/entertainment.png')
+    },
+    {
+      name: "others",
+      logo: require('../../assets/categories/others.png')
+    },
+    {
+      name: "travel",
+      logo: require('../../assets/categories/travel.png')
+    },
+    {
+      name: "transfer",
+      logo: require('../../assets/categories/transfer.png')
+    },
+  ]
   const [budget, setBudget] = useState([
-    {
-      name: "Housing",
-      amount: 20000,
-      utilized: 15000,
-      logo: "https://i.ibb.co/37P8pzt/image.png",
-    },
-    {
-      name: "Food",
-      amount: 8000,
-      utilized: 5000,
-      logo: "https://i.ibb.co/kJ4ZYLw/image.png",
-    },
-    {
-      name: "Utility",
-      amount: 5000,
-      utilized: 4000,
-      logo: "https://i.ibb.co/Lk0yH9f/homeutilities01.png",
-    },
-    {
-      name: "Savings",
-      amount: 15000,
-      utilized: 11000,
-      logo: "https://i.ibb.co/p4Wq554/image.png",
-    },
-    {
-      name: "Personal",
-      amount: 10000,
-      utilized: 7000,
-      logo: "https://i.ibb.co/kMp7zbs/i01-istockphoto-487764258-612x612.jpg",
-    },
+    //   {
+    //     name: "Housing",
+    //     amount: 20000,
+    //     utilized: 15000,
+    //     logo: "https://i.ibb.co/37P8pzt/image.png",
+    //   },
+    //   {
+    //     name: "Food",
+    //     amount: 8000,
+    //     utilized: 5000,
+    //     logo: "https://i.ibb.co/kJ4ZYLw/image.png",
+    //   },
+    //   {
+    //     name: "Utility",
+    //     amount: 5000,
+    //     utilized: 4000,
+    //     logo: "https://i.ibb.co/Lk0yH9f/homeutilities01.png",
+    //   },
+    //   {
+    //     name: "Savings",
+    //     amount: 15000,
+    //     utilized: 11000,
+    //     logo: "https://i.ibb.co/p4Wq554/image.png",
+    //   },
+    //   {
+    //     name: "Personal",
+    //     amount: 10000,
+    //     utilized: 7000,
+    //     logo: "https://i.ibb.co/kMp7zbs/i01-istockphoto-487764258-612x612.jpg",
+    //   },
   ]);
+  useEffect(() => {
+    fetchAllBudget().then((res) => {
+      //console.log('budget',res);
+      setBudgetAmount(() => res);
+      const categories = getCategoriesArray(expenses);
+      setBudget((old) => {
+        return [
+          ...categories,
+        ];
+      });
 
-  const data = [
-    {
-      name: budget[0].name,
-      amount: budget[0].amount,
-      color: "#003f5c",
-      legendFontColor: "#003f5c",
-      legendFontSize: 17,
-    },
-    {
-      name: budget[1].name,
-      amount: budget[1].amount,
-      color: "#ffa600",
-      legendFontColor: "#003f5c",
-      legendFontSize: 17,
-    },
-    {
-      name: budget[2].name,
-      amount: budget[2].amount,
-      color: "#58508d",
-      legendFontColor: "#58508d",
-      legendFontSize: 17,
-    },
-    {
-      name: budget[3].name,
-      amount: budget[3].amount,
-      color: "#bc5090",
-      legendFontColor: "#bc5090",
-      legendFontSize: 17,
-    },
-    {
-      name: budget[4].name,
-      amount: budget[4].amount,
-      color: "#ff6361",
-      legendFontColor: "#ff6361",
-      legendFontSize: 17,
-    },
-  ];
+    });
+
+  }, [expenses,reRender]);
+  const getBudgetForThisCategory = (category) => {
+    //console.log('budgetCategories', budgetCategories);
+    return budgetCategories[category] !== undefined ? budgetCategories[category].budget : 0;
+  }
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+  const getCategoriesArray = (expenses) => {
+    const categories = [];
+    expenses.map((expense) => {
+      if (!categories.find((category) => category.name === expense.category)) {
+        categories.push({
+          name: expense.category,
+          amount: expense.amount,
+          budget: getBudgetForThisCategory(expense.category),
+        });
+      }
+      else {
+        categories.forEach((category) => {
+          if (category.name === expense.category) {
+            category.amount = expense.amount + category.amount;
+          }
+        }
+        )
+      }
+    });
+    //console.log(categories);
+    categories.forEach((category) => {
+      var temp = images.find((image) => image.name === category.name);
+      if (temp) {
+        category.logo = temp.logo;
+      }
+    })
+    return categories;
+  };
   return (
     <View style={{ backgroundColor: GlobalStyles.colors.lightAccent }}>
       <ScrollView>
-        <PieChart
+        {/* <PieChart
           data={data}
           width={390}
           height={200}
@@ -114,9 +169,10 @@ const Budget = () => {
           paddingLeft={"0"}
           center={[0, 0]}
           absolute
-        />
+        /> */}
         <View style={styles.cardContainer}>
-          {budget.map((bud, index) => {
+          {budget.length > 0 ? budget.map((bud, index) => {
+            //console.log("test", bud);
             return (
               <Card
                 style={{
@@ -127,18 +183,19 @@ const Budget = () => {
                 }}
                 key={bud.name}
               >
-                <Card.Cover style={{ height: '45%' }} source={{ uri: bud.logo }} />
-                <Card.Title titleStyle={{ fontSize: 15 }} title={bud.name} />
+                <Card.Cover resizeMode="contain" style={{padding : 15,  height: '45%',elevation : 2}} source={bud.logo} />
+                <Card.Title titleStyle={{ fontSize: 15 }} title={capitalizeFirstLetter(bud.name)} />
                 <Card.Content style={{}} >
-                  <Title style={{ fontSize: 15, margin: 0, padding: 0 }}>Rs.{bud.amount} Budget</Title>
-                  <Title style={{ fontSize: 15 }}>Rs.{bud.utilized} Utilized </Title>
+                  <Title style={{ fontSize: 15, margin: 0, padding: 0 }}>Rs.{getBudgetForThisCategory(bud.name).toFixed(2)} Budget</Title>
+                  <Title style={{ fontSize: 15 }}>Rs.{bud.amount.toFixed(1)} Utilized </Title>
                 </Card.Content>
                 <Card.Actions>
                   <Button
-                    style={{ 
+                    style={{
                     }}
                     onPress={() => {
-                      setPos(index);
+                      //setPos(index);
+                      setEditBudgetForm((old) => ({ name: bud.name, amount: getBudgetForThisCategory(bud.name) }));
                       toggleModal();
                     }}
                   >
@@ -146,8 +203,8 @@ const Budget = () => {
                   </Button>
                 </Card.Actions>
               </Card>
-            );
-          })}
+            )
+          }) : <></>}
         </View>
 
       </ScrollView>
@@ -162,8 +219,8 @@ const Budget = () => {
                 backgroundColor: GlobalStyles.colors.accent,
                 margin: 15,
               }}
-              onChangeText={setBudgetAmount}
-              value={budgetAmount}
+              onChangeText={(value) => (setEditBudgetForm((old) => ({ ...old, amount: value })))}
+              value={String(editBudgetForm.amount)}
               mode="outlined"
               keyboardType="numeric"
             />
@@ -174,9 +231,10 @@ const Budget = () => {
                 margin: 15,
               }}
               onPress={() => {
-                const temp = [...budget];
-                temp[pos].amount = Number(budgetAmount);
-                setBudget(temp);
+                //console.log('edit', editBudgetForm);
+                updateBudget(editBudgetForm.name, { budget: +(+editBudgetForm.amount).toFixed(2) });
+                setReRender((old) => !old);
+                //console.log();
                 toggleModal();
               }}
             >
