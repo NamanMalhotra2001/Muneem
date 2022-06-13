@@ -35,7 +35,6 @@ export async function fetchExpenses() {
 
 export async function fetchAll() {
 	const response = await axios.get(BACKEND_URL + '/user1.json');
-
 	return response.data;
 }
 

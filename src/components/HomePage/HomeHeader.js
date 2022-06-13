@@ -11,10 +11,10 @@ import IconButton from '../UI/IconButton';
 
 const HomeHeader = ({ expenses }) => {
 	const navigation = useNavigation();
-	const [others, setOthers] = useState();
 	const [amounts, setAmounts] = useState({
 		spent: 5400.32,
 		budget: 10000.0,
+		income: 20000.0,
 	});
 	const percentage = (amounts.spent / amounts.budget) * 100;
 	const [color, setColor] = useState('#ffffffff');
@@ -22,10 +22,18 @@ const HomeHeader = ({ expenses }) => {
 
 	useEffect(() => {
 		const monthExpenses = expenses.filter((e) => {
-			return e.date.getMonth() === new Date().getMonth();
+			return e.date.getMonth() === new Date().getMonth() && e.isExpense;
+		});
+
+		const incomeTransactions = expenses.filter((e) => {
+			return e.date.getMonth() === new Date().getMonth() && !e.isExpense;
 		});
 
 		const expensesSum = monthExpenses.reduce((sum, expense) => {
+			return sum + expense.amount;
+		}, 0);
+
+		const incomeSum = incomeTransactions.reduce((sum, expense) => {
 			return sum + expense.amount;
 		}, 0);
 
@@ -33,6 +41,7 @@ const HomeHeader = ({ expenses }) => {
 			setAmounts({
 				spent: expensesSum,
 				budget: res.others.budget,
+				income: incomeSum,
 			});
 		});
 	}, [expenses]);
@@ -168,7 +177,7 @@ const HomeHeader = ({ expenses }) => {
 						Income:{' '}
 						<Text style={{ fontWeight: '900' }}>
 							{GlobalStyles.symbols.rupee}
-							{20000}
+							{amounts.income}
 						</Text>
 					</Text>
 				</View>

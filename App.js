@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
+import { useState } from 'react';
 import BottomTabsNavigation from './src/components/BottomTabsNavigation';
 import { GlobalStyles } from './src/constants/styles';
 import AddSubscription from './src/screens/AddSubscription';
@@ -14,7 +15,41 @@ import ExpensesContextProvider from './src/store/expenses-context';
 
 const Stack = createNativeStackNavigator();
 
+function noAuthNavigation() {
+	return (
+		<NavigationContainer>
+			<Stack.Navigator
+				screenOptions={{
+					headerStyle: {
+						backgroundColor: GlobalStyles.colors.primary,
+					},
+					headerTintColor: GlobalStyles.colors.highlight,
+				}}
+				// initialRouteName={'BottomTabsNavigation'}
+			>
+				<Stack.Screen
+					name='Intro'
+					component={Intro}
+					options={{ headerShown: false }}
+				/>
+				<Stack.Screen
+					name='LogIn'
+					component={LogIn}
+					options={{ headerShown: false }}
+				/>
+				<Stack.Screen
+					name='SignUp'
+					component={SignUp}
+					options={{ headerShown: false }}
+				/>
+			</Stack.Navigator>
+		</NavigationContainer>
+	);
+}
+
 export default function App() {
+	const [isLogin, setIsLogin] = useState(false);
+
 	return (
 		<>
 			<StatusBar
@@ -23,69 +58,73 @@ export default function App() {
 				backgroundColor={GlobalStyles.colors.primary}
 			/>
 			<ExpensesContextProvider>
-				<NavigationContainer>
-					<Stack.Navigator
-						screenOptions={{
-							headerStyle: {
-								backgroundColor: GlobalStyles.colors.primary,
-							},
-							headerTintColor: GlobalStyles.colors.highlight,
-						}}
-						initialRouteName={'BottomTabsNavigation'}
-					>
-						<Stack.Screen
-							name='Intro'
-							component={Intro}
-							options={{ headerShown: false }}
-						/>
-						<Stack.Screen
-							name='LogIn'
-							component={LogIn}
-							options={{ headerShown: false }}
-						/>
-						<Stack.Screen
-							name='SignUp'
-							component={SignUp}
-							options={{ headerShown: false }}
-						/>
-						<Stack.Screen
-							name='UserProfile'
-							component={UserProfile}
-							options={{
-								// headerShown: false
-								headerTitleAlign: 'center',
+				{!isLogin ? (
+					<noAuthNavigation />
+				) : (
+					<NavigationContainer>
+						<Stack.Navigator
+							screenOptions={{
+								headerStyle: {
+									backgroundColor: GlobalStyles.colors.primary,
+								},
+								headerTintColor: GlobalStyles.colors.highlight,
 							}}
-						/>
-						<Stack.Screen
-							name='BottomTabsNavigation'
-							component={BottomTabsNavigation}
-							options={{ headerShown: false }}
-						/>
-						<Stack.Screen
-							name='AllExpenses'
-							component={AllExpenses}
-							options={{ headerShown: false }}
-						/>
-						<Stack.Screen
-							name='ManageExpense'
-							component={ManageExpenses}
-							options={{
-								title: 'Manage Expense',
-								headerTitleAlign: 'center',
-								presentation: 'modal',
-							}}
-						/>
-						<Stack.Screen
-							name='AddSubscription'
-							component={AddSubscription}
-							options={{
-								title: 'Add Subscription',
-								headerTitleAlign: 'center',
-								// presentation: 'modal',
-							}}
-						/>
-					</Stack.Navigator>
-				</NavigationContainer>
+							initialRouteName={'BottomTabsNavigation'}
+						>
+							<Stack.Screen
+								name='Intro'
+								component={Intro}
+								options={{ headerShown: false }}
+							/>
+							<Stack.Screen
+								name='LogIn'
+								component={LogIn}
+								options={{ headerShown: false }}
+							/>
+							<Stack.Screen
+								name='SignUp'
+								component={SignUp}
+								options={{ headerShown: false }}
+							/>
+							<Stack.Screen
+								name='UserProfile'
+								component={UserProfile}
+								options={{
+									// headerShown: false
+									headerTitleAlign: 'center',
+								}}
+							/>
+							<Stack.Screen
+								name='BottomTabsNavigation'
+								component={BottomTabsNavigation}
+								options={{ headerShown: false }}
+							/>
+							<Stack.Screen
+								name='AllExpenses'
+								component={AllExpenses}
+								options={{ headerShown: false }}
+							/>
+							<Stack.Screen
+								name='ManageExpense'
+								component={ManageExpenses}
+								options={{
+									title: 'Manage Expense',
+									headerTitleAlign: 'center',
+									presentation: 'modal',
+								}}
+							/>
+							<Stack.Screen
+								name='AddSubscription'
+								component={AddSubscription}
+								options={{
+									title: 'Add Subscription',
+									headerTitleAlign: 'center',
+									// presentation: 'modal',
+								}}
+							/>
+						</Stack.Navigator>
+					</NavigationContainer>
+				)}
 			</ExpensesContextProvider>
 		</>
 	);

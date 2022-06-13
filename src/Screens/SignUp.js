@@ -11,6 +11,7 @@ import {
 } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalStyles } from '../constants/styles';
+import { createUser } from '../util/auth';
 
 const SignUp = ({ route, navigation }) => {
 	const [show, setShow] = React.useState(false);
@@ -19,49 +20,54 @@ const SignUp = ({ route, navigation }) => {
 		password_1: '',
 		password_2: '',
 	});
-	const styles = StyleSheet.create({
-		paperShadow: {
-			width: '70%',
-			height: '60%',
-			borderWidth: 4,
-			borderRadius: 10,
-			borderColor: '#ddd',
-			shadowColor: '#ddd',
-			shadowOffset: { width: 0, height: 0 },
-			shadowOpacity: 0.9,
-			shadowRadius: 4,
-		},
-		topHalfCircle: {
-			width: 350,
-			height: 350,
-			backgroundColor: GlobalStyles.colors.accent,
-			position: 'absolute',
-			top: -175,
-			left: -100,
-			borderRadius: 180,
-		},
-		bottomHalfCircle: {
-			width: 350,
-			height: 350,
-			backgroundColor: GlobalStyles.colors.accent,
-			position: 'absolute',
-			bottom: -175,
-			right: -100,
-			borderRadius: 180,
-			zIndex: 0,
-		},
-		heading: {
-			backgroundColor: 'white',
-		},
-		leftAlign: {
-			alignSelf: 'flex-start',
-			marginLeft: 48,
-		},
-		rightAlign: {
-			alignSelf: 'flex-end',
-			marginRight: 48,
-		},
+
+	const signupHandler = () => {
+		createUser();
+	};
+
+	const [credentialsInvalid, setCredentialsInvalid] = useState({
+		email: false,
+		password: false,
+		confirmEmail: false,
+		confirmPassword: false,
 	});
+
+	// function switchAuthModeHandler() {
+	// 	if (isLogin) {
+	// 		navigation.replace('Signup');
+	// 	} else {
+	// 		navigation.replace('Login');
+	// 	}
+	// }
+
+	function submitHandler(credentials) {
+		let { email, confirmEmail, password, confirmPassword } = credentials;
+
+		email = email.trim();
+		password = password.trim();
+
+		const emailIsValid = email.includes('@');
+		const passwordIsValid = password.length > 6;
+		const emailsAreEqual = email === confirmEmail;
+		const passwordsAreEqual = password === confirmPassword;
+
+		if (
+			!emailIsValid ||
+			!passwordIsValid ||
+			(!isLogin && (!emailsAreEqual || !passwordsAreEqual))
+		) {
+			Alert.alert('Invalid input', 'Please check your entered credentials.');
+			setCredentialsInvalid({
+				email: !emailIsValid,
+				confirmEmail: !emailIsValid || !emailsAreEqual,
+				password: !passwordIsValid,
+				confirmPassword: !passwordIsValid || !passwordsAreEqual,
+			});
+			return;
+		}
+		onAuthenticate({ email, password });
+	}
+
 	return (
 		<NativeBaseProvider>
 			<View style={styles.topHalfCircle}></View>
@@ -160,3 +166,47 @@ const SignUp = ({ route, navigation }) => {
 };
 
 export default SignUp;
+
+const styles = StyleSheet.create({
+	paperShadow: {
+		width: '70%',
+		height: '60%',
+		borderWidth: 4,
+		borderRadius: 10,
+		borderColor: '#ddd',
+		shadowColor: '#ddd',
+		shadowOffset: { width: 0, height: 0 },
+		shadowOpacity: 0.9,
+		shadowRadius: 4,
+	},
+	topHalfCircle: {
+		width: 350,
+		height: 350,
+		backgroundColor: GlobalStyles.colors.accent,
+		position: 'absolute',
+		top: -175,
+		left: -100,
+		borderRadius: 180,
+	},
+	bottomHalfCircle: {
+		width: 350,
+		height: 350,
+		backgroundColor: GlobalStyles.colors.accent,
+		position: 'absolute',
+		bottom: -175,
+		right: -100,
+		borderRadius: 180,
+		zIndex: 0,
+	},
+	heading: {
+		backgroundColor: 'white',
+	},
+	leftAlign: {
+		alignSelf: 'flex-start',
+		marginLeft: 48,
+	},
+	rightAlign: {
+		alignSelf: 'flex-end',
+		marginRight: 48,
+	},
+});
