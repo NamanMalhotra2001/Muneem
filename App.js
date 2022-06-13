@@ -58,7 +58,7 @@ export default function App() {
 				backgroundColor={GlobalStyles.colors.primary}
 			/>
 			<ExpensesContextProvider>
-				{!isLogin ? (
+				{isLogin ? (
 					<noAuthNavigation />
 				) : (
 					<NavigationContainer>
