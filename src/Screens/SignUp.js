@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import {
 	Input,
 	Icon,
@@ -21,16 +21,16 @@ const SignUp = ({ route, navigation }) => {
 		password_2: '',
 	});
 
-	const signupHandler = () => {
-		createUser();
-	};
+	// const signupHandler = () => {
+	// 	createUser();
+	// };
 
-	const [credentialsInvalid, setCredentialsInvalid] = useState({
-		email: false,
-		password: false,
-		confirmEmail: false,
-		confirmPassword: false,
-	});
+	// const [credentialsInvalid, setCredentialsInvalid] = useState({
+	// 	email: false,
+	// 	password: false,
+	// 	confirmEmail: false,
+	// 	confirmPassword: false,
+	// });
 
 	// function switchAuthModeHandler() {
 	// 	if (isLogin) {
@@ -40,32 +40,23 @@ const SignUp = ({ route, navigation }) => {
 	// 	}
 	// }
 
-	function submitHandler(credentials) {
-		let { email, confirmEmail, password, confirmPassword } = credentials;
+	function submitHandler(formData) {
+		let { email, password_1, password_2 } = formData;
 
 		email = email.trim();
-		password = password.trim();
+		password_1 = password_1.trim();
+		password_2 = password_2.trim();
 
 		const emailIsValid = email.includes('@');
-		const passwordIsValid = password.length > 6;
-		const emailsAreEqual = email === confirmEmail;
-		const passwordsAreEqual = password === confirmPassword;
+		const passwordIsValid = password_1.length > 6;
+		const passwordsAreEqual = password_1 === password_2;
 
-		if (
-			!emailIsValid ||
-			!passwordIsValid ||
-			(!isLogin && (!emailsAreEqual || !passwordsAreEqual))
-		) {
+		if (!emailIsValid || !passwordIsValid || !passwordsAreEqual) {
 			Alert.alert('Invalid input', 'Please check your entered credentials.');
-			setCredentialsInvalid({
-				email: !emailIsValid,
-				confirmEmail: !emailIsValid || !emailsAreEqual,
-				password: !passwordIsValid,
-				confirmPassword: !passwordIsValid || !passwordsAreEqual,
-			});
 			return;
 		}
-		onAuthenticate({ email, password });
+		createUser(email, password_1);
+		navigation.navigate('LogIn');
 	}
 
 	return (
@@ -145,7 +136,7 @@ const SignUp = ({ route, navigation }) => {
 					<Button
 						style={styles.leftAlign}
 						backgroundColor={GlobalStyles.colors.highlight}
-						onPress={() => console.log(formData)}
+						onPress={() => submitHandler(formData)}
 						size='sm'
 					>
 						Sign up

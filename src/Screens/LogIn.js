@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import {
 	Input,
 	Icon,
@@ -12,6 +12,8 @@ import {
 } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalStyles } from '../constants/styles';
+import { login } from '../util/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LogIn = ({ route, navigation }) => {
 	const [show, setShow] = React.useState(false);
@@ -19,6 +21,34 @@ const LogIn = ({ route, navigation }) => {
 		email: '',
 		password: '',
 	});
+
+	function submitHandler(formData) {
+		let { email, password } = formData;
+
+		email = email.trim();
+		password = password.trim();
+
+		const emailIsValid = email.includes('@');
+		const passwordIsValid = password.length > 6;
+
+		if (!emailIsValid || !passwordIsValid) {
+			Alert.alert('Invalid input', 'Please check your entered credentials.');
+			return;
+		}
+
+		const storeData = async (value) => {
+			try {
+				await AsyncStorage.setItem('isLogin', value);
+			} catch (e) {
+				// saving error
+			}
+		};
+
+		storeData('true');
+
+		login(email, password);
+		navigation.navigate('BottomTabsNavigation');
+	}
 
 	return (
 		<NativeBaseProvider>
@@ -74,8 +104,7 @@ const LogIn = ({ route, navigation }) => {
 						style={styles.leftAlign}
 						backgroundColor={GlobalStyles.colors.highlight}
 						onPress={() => {
-							console.log(formData);
-							navigation.navigate('ExpensesOverview');
+							submitHandler(formData);
 						}}
 						size='sm'
 					>

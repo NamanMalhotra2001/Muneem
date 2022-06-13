@@ -7,6 +7,7 @@ import { Title, Card, Button } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UserProfile = () => {
 	const navigation = useNavigation();
@@ -70,7 +71,17 @@ const UserProfile = () => {
 				<Button
 					icon='exit-to-app'
 					mode='contained'
-					onPress={() => console.log('Pressed')}
+					onPress={() => {
+						const storeData = async (value) => {
+							try {
+								await AsyncStorage.setItem('isLogin', value);
+							} catch (e) {
+								// saving error
+							}
+						};
+
+						storeData('false');
+					}}
 				>
 					Sign out
 				</Button>
